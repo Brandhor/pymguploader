@@ -3,16 +3,15 @@ from PyQt4.QtGui import *
 import os
 import sys
 import re
-#os.popen("pyuic4 ui.ui -o ui.py").read()
+os.popen("pyuic4 ui.ui -o ui.py").read()
 import ui
 import imgsite
 
-class ImageUploader(QDialog):
+class ImageUploader(QMainWindow):
     def __init__(self,  parent=None):
         super(ImageUploader, self).__init__(parent)
-        self.ui = ui.Ui_Dialog()
+        self.ui = ui.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowFlags(Qt.WindowMinMaxButtonsHint)
         self.progressDialog = QProgressDialog(self)
         self.progressDialog.setWindowTitle(self.tr("Image upload"))
         self.progressDialog.setAutoClose(False)
@@ -43,7 +42,7 @@ class ImageUploader(QDialog):
             self.ui.comboSite.addItem(s)
                 
     def addClicked(self):
-        ls = QFileDialog.getOpenFileNames()
+        ls = QFileDialog.getOpenFileNames(self, "Select images to upload", "", "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
         for l in ls:
             QListWidgetItem(QIcon(l), l, self.ui.imgList)
             print l
