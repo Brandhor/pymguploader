@@ -40,12 +40,18 @@
            <property name="text" >
             <string>Add</string>
            </property>
+           <property name="icon" >
+            <iconset resource="res.qrc" >:/new/prefix1/img/add.png</iconset>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="btnRemove" >
            <property name="text" >
             <string>Remove</string>
+           </property>
+           <property name="icon" >
+            <iconset resource="res.qrc" >:/new/prefix1/img/delete.png</iconset>
            </property>
           </widget>
          </item>
@@ -94,12 +100,18 @@
         <property name="text" >
          <string>Upload</string>
         </property>
+        <property name="icon" >
+         <iconset resource="res.qrc" >:/new/prefix1/img/upload.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btnCancel" >
         <property name="text" >
          <string>Cancel</string>
+        </property>
+        <property name="icon" >
+         <iconset resource="res.qrc" >:/new/prefix1/img/cancel.png</iconset>
         </property>
        </widget>
       </item>
@@ -147,6 +159,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar" />
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc" />
+ </resources>
  <connections/>
 </ui>

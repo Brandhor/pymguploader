@@ -3,7 +3,9 @@ from PyQt4.QtGui import *
 import os
 import sys
 import re
-os.popen("pyuic4 ui.ui -o ui.py").read()
+if not hasattr(sys, "frozen"):
+    os.popen("pyuic4 ui.ui -o ui.py").read()
+    os.popen("pyrcc4 res.qrc -o res_rc.py").read()
 import ui
 import imgsite
 
