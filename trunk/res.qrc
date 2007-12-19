@@ -3,6 +3,7 @@
         <file>img/add.png</file>
         <file>img/cancel.png</file>
         <file>img/delete.png</file>
+        <file>img/icon.png</file>
         <file>img/upload.png</file>
     </qresource>
 </RCC>
