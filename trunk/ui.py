@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui.ui'
 #
-# Created: Wed Dec 19 18:05:19 2007
-#      by: PyQt4 UI code generator 4.3.1
+# Created: Wed Dec 19 20:22:49 2007
+#      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -37,10 +37,12 @@ class Ui_MainWindow(object):
         self.vboxlayout1.setObjectName("vboxlayout1")
 
         self.btnAdd = QtGui.QPushButton(self.frame)
+        self.btnAdd.setIcon(QtGui.QIcon(":/new/prefix1/img/add.png"))
         self.btnAdd.setObjectName("btnAdd")
         self.vboxlayout1.addWidget(self.btnAdd)
 
         self.btnRemove = QtGui.QPushButton(self.frame)
+        self.btnRemove.setIcon(QtGui.QIcon(":/new/prefix1/img/delete.png"))
         self.btnRemove.setObjectName("btnRemove")
         self.vboxlayout1.addWidget(self.btnRemove)
 
@@ -72,10 +74,12 @@ class Ui_MainWindow(object):
         self.hboxlayout2.addWidget(self.comboSite)
 
         self.btnUpload = QtGui.QPushButton(self.centralwidget)
+        self.btnUpload.setIcon(QtGui.QIcon(":/new/prefix1/img/upload.png"))
         self.btnUpload.setObjectName("btnUpload")
         self.hboxlayout2.addWidget(self.btnUpload)
 
         self.btnCancel = QtGui.QPushButton(self.centralwidget)
+        self.btnCancel.setIcon(QtGui.QIcon(":/new/prefix1/img/cancel.png"))
         self.btnCancel.setObjectName("btnCancel")
         self.hboxlayout2.addWidget(self.btnCancel)
         self.vboxlayout.addLayout(self.hboxlayout2)
@@ -120,3 +124,4 @@ class Ui_MainWindow(object):
         self.btnUpload.setText(QtGui.QApplication.translate("MainWindow", "Upload", None, QtGui.QApplication.UnicodeUTF8))
         self.btnCancel.setText(QtGui.QApplication.translate("MainWindow", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 
+import res_rc
