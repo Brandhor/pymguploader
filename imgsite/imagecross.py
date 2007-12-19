@@ -8,10 +8,6 @@ class Imagecross(QObject):
     def __init__(self, parent):
         super(Imagecross, self).__init__(parent)
         self.http = QHttp(parent)
-        self.progressDialog = QProgressDialog(parent)
-        print "x: %s y: %s height: %s"%(self.progressDialog.x(),  parent.progressDialog.y(), parent.progressDialog.height())
-        
-        print "x: %s y: %s"%(self.progressDialog.x(), self.progressDialog.y())
         
         self.connect(self.http, SIGNAL("requestFinished(int, bool)"),
                      self.httpRequestFinished)
@@ -19,8 +15,6 @@ class Imagecross(QObject):
                      self.updateDataSendProgress)
         self.connect(self.http, SIGNAL("responseHeaderReceived(QHttpResponseHeader)"),
                      self.readResponseHeader)
-        self.connect(self.progressDialog, SIGNAL("canceled()"),
-                     self.cancelUpload)
         self.connect(self.http, SIGNAL("readyRead(QHttpResponseHeader)"), 
                      self.readHttp)
     
@@ -62,10 +56,7 @@ class Imagecross(QObject):
     
         self.httpRequestAborted = False
         self.httpGetId = self.http.request(header, bytes)
-        self.progressDialog.show()
-        self.progressDialog.move(self.progressDialog.x(), self.parent().progressDialog.y()+self.parent().progressDialog.height()+30)
-        self.progressDialog.setWindowTitle(self.tr("Imagecross"))
-        self.progressDialog.setLabelText(self.tr("Uploading %1.").arg(path))
+        self.parent().ui.lblPartial.setText("Uploading %s."%path)
     
     
     def readHttp(self,  responseHeader):
@@ -80,13 +71,10 @@ class Imagecross(QObject):
     def httpRequestFinished(self, requestId, error):
         print "FINISHED"
         if self.httpRequestAborted:
-            self.progressDialog.hide()
             return
 
         if requestId != self.httpGetId:
             return
-    
-        self.progressDialog.hide()
     
         if error:
             QMessageBox.information(self, self.tr("Imagecross"),
@@ -105,7 +93,6 @@ class Imagecross(QObject):
                                           self.tr("Upload failed: %1.")
                                           .arg(responseHeader.reasonPhrase()))
             self.httpRequestAborted = True
-            self.progressDialog.hide()
             self.http.abort()
             return
 
@@ -113,9 +100,8 @@ class Imagecross(QObject):
         print "SENDPROGRESS"
         if self.httpRequestAborted:
             return
-    
-        self.progressDialog.setMaximum(total)
-        self.progressDialog.setValue(done)
+        self.parent().ui.pbPartial.setMaximum(total)
+        self.parent().ui.pbPartial.setValue(done)
     
     def __str__(self):
         return "Imagecross"
