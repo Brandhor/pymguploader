@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui.ui'
 #
-# Created: Tue Dec 18 17:39:33 2007
+# Created: Wed Dec 19 12:13:47 2007
 #      by: PyQt4 UI code generator 4.3.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -75,6 +75,24 @@ class Ui_MainWindow(object):
         self.btnUpload.setObjectName("btnUpload")
         self.hboxlayout2.addWidget(self.btnUpload)
         self.vboxlayout.addLayout(self.hboxlayout2)
+
+        self.lblTotal = QtGui.QLabel(self.centralwidget)
+        self.lblTotal.setObjectName("lblTotal")
+        self.vboxlayout.addWidget(self.lblTotal)
+
+        self.pbTotal = QtGui.QProgressBar(self.centralwidget)
+        self.pbTotal.setProperty("value",QtCore.QVariant(0))
+        self.pbTotal.setObjectName("pbTotal")
+        self.vboxlayout.addWidget(self.pbTotal)
+
+        self.lblPartial = QtGui.QLabel(self.centralwidget)
+        self.lblPartial.setObjectName("lblPartial")
+        self.vboxlayout.addWidget(self.lblPartial)
+
+        self.pbPartial = QtGui.QProgressBar(self.centralwidget)
+        self.pbPartial.setProperty("value",QtCore.QVariant(0))
+        self.pbPartial.setObjectName("pbPartial")
+        self.vboxlayout.addWidget(self.pbPartial)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.menubar = QtGui.QMenuBar(MainWindow)

@@ -12,14 +12,9 @@ class ImageUploader(QMainWindow):
         super(ImageUploader, self).__init__(parent)
         self.ui = ui.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.progressDialog = QProgressDialog(self)
-        self.progressDialog.setWindowTitle(self.tr("Image upload"))
-        self.progressDialog.setAutoClose(False)
-        self.progressDialog.setAutoReset(False)
         self.counter = 0
         
         self.scanSite()
-        self.connect(self.progressDialog, SIGNAL("canceled()"), self.cancelUpload)
         self.connect(self.ui.btnAdd,  SIGNAL("clicked()"), self.addClicked)
         self.connect(self.ui.btnRemove,  SIGNAL("clicked()"), self.removeClicked)
         self.connect(self.ui.btnUpload,  SIGNAL("clicked()"), self.uploadClicked)
@@ -58,8 +53,8 @@ class ImageUploader(QMainWindow):
             print i
             self.uploadList[self.ui.imgList.item(i).text()] = self.site[str(self.ui.comboSite.currentText())]
             i += 1
-        self.progressDialog.setMaximum(self.ui.imgList.count())
-        self.progressDialog.setValue(0)
+        self.ui.pbTotal.setMaximum(self.ui.imgList.count())
+        self.ui.pbTotal.setValue(0)
         self.upload()
         
     def upload(self,  code=None):
@@ -72,12 +67,10 @@ class ImageUploader(QMainWindow):
                 
                 
         if not len(self.uploadList):
-            self.progressDialog.hide()
             return
         
-        self.progressDialog.show()
-        self.progressDialog.setValue(self.progressDialog.value()+1)
-        self.progressDialog.setLabelText("Uploading %d of %d"%(self.progressDialog.value(),  self.progressDialog.maximum()))
+        self.ui.pbTotal.setValue(self.ui.pbTotal.value()+1)
+        self.ui.lblTotal.setText("Uploading %d of %d"%(self.ui.pbTotal.value(),  self.ui.pbTotal.maximum()))
         it = self.uploadList.popitem()
         it[1].upload(it[0])
 

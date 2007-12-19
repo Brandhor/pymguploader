@@ -98,6 +98,34 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QLabel" name="lblTotal" >
+      <property name="text" >
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="pbTotal" >
+      <property name="value" >
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="lblPartial" >
+      <property name="text" >
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="pbPartial" >
+      <property name="value" >
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar" >
