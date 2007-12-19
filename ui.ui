@@ -96,6 +96,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="btnCancel" >
+        <property name="text" >
+         <string>Cancel</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -134,7 +141,7 @@
      <x>0</x>
      <y>0</y>
      <width>555</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

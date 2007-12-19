@@ -60,16 +60,13 @@ class Imagecross(QObject):
     
     
     def readHttp(self,  responseHeader):
-        print "READHTTP"
         self.html += self.http.readAll()
         
     def cancelUpload(self):
-        print "CANCELLED"
         self.httpRequestAborted = True
         self.http.abort()
         
     def httpRequestFinished(self, requestId, error):
-        print "FINISHED"
         if self.httpRequestAborted:
             return
 
@@ -81,13 +78,11 @@ class Imagecross(QObject):
                                           self.tr("Upload failed: %1.")
                                           .arg(self.http.errorString()))
         else:
-            print "AHOOOO"
             code = re.search(r"myspace-image-hosting-viewer-(?P<char>.)\.php\?id=(?P<id>.*)\"><img", self.html)
             code = "[URL=http://www.imagecross.com/myspace-image-hosting-viewer-%s.php?id=%s][IMG]http://hosting03.imagecross.com/myspace-image-hosting-thumbs-%s/%s[/IMG][/URL]"%(code.group(1), code.group(2), code.group(1), code.group(2))
             self.emit(SIGNAL("done(QString)"), code)
 
     def readResponseHeader(self, responseHeader):
-        print "RESPONSE"
         if responseHeader.statusCode() != 200:
             QMessageBox.information(self, self.tr("Imagecross"),
                                           self.tr("Upload failed: %1.")
@@ -97,7 +92,6 @@ class Imagecross(QObject):
             return
 
     def updateDataSendProgress(self, done, total):
-        print "SENDPROGRESS"
         if self.httpRequestAborted:
             return
         self.parent().ui.pbPartial.setMaximum(total)

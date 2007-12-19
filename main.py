@@ -16,11 +16,13 @@ class ImageUploader(QMainWindow):
         
         self.scanSite()
         self.connect(self.ui.btnAdd,  SIGNAL("clicked()"), self.addClicked)
+        self.connect(self.ui.btnCancel, SIGNAL("clicked()"), self.cancelUpload)
         self.connect(self.ui.btnRemove,  SIGNAL("clicked()"), self.removeClicked)
         self.connect(self.ui.btnUpload,  SIGNAL("clicked()"), self.uploadClicked)
     
     def cancelUpload(self):
         self.uploadList = {}
+        self.site[str(self.ui.comboSite.currentText())].cancelUpload()
         
     def scanSite(self):
         self.site = {}
@@ -40,7 +42,6 @@ class ImageUploader(QMainWindow):
         ls = QFileDialog.getOpenFileNames(self, "Select images to upload", "", "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
         for l in ls:
             QListWidgetItem(QIcon(l), l, self.ui.imgList)
-            print l
             
     def removeClicked(self):
         i = self.ui.imgList.takeItem(self.ui.imgList.currentRow())
@@ -48,11 +49,8 @@ class ImageUploader(QMainWindow):
         
     def uploadClicked(self):
         self.uploadList = {}
-        i = 0
-        while i < self.ui.imgList.count():
-            print i
+        for i in xrange(0, self.ui.imgList.count()):
             self.uploadList[self.ui.imgList.item(i).text()] = self.site[str(self.ui.comboSite.currentText())]
-            i += 1
         self.ui.pbTotal.setMaximum(self.ui.imgList.count())
         self.ui.pbTotal.setValue(0)
         self.upload()
