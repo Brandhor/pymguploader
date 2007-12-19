@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui.ui'
 #
-# Created: Wed Dec 19 12:13:47 2007
-#      by: PyQt4 UI code generator 4.3.1
+# Created: Wed Dec 19 14:47:04 2007
+#      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -74,6 +74,10 @@ class Ui_MainWindow(object):
         self.btnUpload = QtGui.QPushButton(self.centralwidget)
         self.btnUpload.setObjectName("btnUpload")
         self.hboxlayout2.addWidget(self.btnUpload)
+
+        self.btnCancel = QtGui.QPushButton(self.centralwidget)
+        self.btnCancel.setObjectName("btnCancel")
+        self.hboxlayout2.addWidget(self.btnCancel)
         self.vboxlayout.addLayout(self.hboxlayout2)
 
         self.lblTotal = QtGui.QLabel(self.centralwidget)
@@ -96,7 +100,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0,0,555,30))
+        self.menubar.setGeometry(QtCore.QRect(0,0,555,21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 
@@ -114,4 +118,5 @@ class Ui_MainWindow(object):
         self.btnRemove.setText(QtGui.QApplication.translate("MainWindow", "Remove", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "BBCode", None, QtGui.QApplication.UnicodeUTF8))
         self.btnUpload.setText(QtGui.QApplication.translate("MainWindow", "Upload", None, QtGui.QApplication.UnicodeUTF8))
+        self.btnCancel.setText(QtGui.QApplication.translate("MainWindow", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 
