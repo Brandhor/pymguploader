@@ -12,6 +12,9 @@
   <property name="windowTitle" >
    <string>Image Uploader</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="res.qrc" >:/new/prefix1/img/icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QVBoxLayout" >
     <item>
