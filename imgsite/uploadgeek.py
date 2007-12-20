@@ -88,7 +88,7 @@ class Uploadgeek(QObject):
             fp.close()
             img = re.search(r"<input type=\"text\" id=\"direct\" value=\"(?P<value>.*)\" onfocus", self.html.toUtf8()).group(1)
             thumb = re.search(r"<input type=\"text\" id=\"forum\" value=\"(?P<value>.*thumbs.*)\" onfocus", self.html.toUtf8()).group(1)
-            code = "[URL=%s][IMG]%s[/IMG][/URL]"%(img, thumb)
+            code = "[URL=\"%s\"][IMG]%s[/IMG][/URL]"%(img, thumb)
             self.emit(SIGNAL("done(QString)"), code)
 
     def readResponseHeader(self, responseHeader):

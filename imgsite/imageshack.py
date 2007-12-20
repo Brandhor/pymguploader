@@ -84,8 +84,11 @@ class Imageshack(QObject):
                                           .arg(self.http.errorString()))
         else:
             img = re.search(r"<image_link>(?P<link>.*)</image_link>", self.html.toUtf8()).group(1)
-            thumb = re.search(r"<thumb_link>(?P<link>.*)</thumb_link>", self.html.toUtf8()).group(1)
-            code = "[URL=%s][IMG]%s[/IMG][/URL]"%(img, thumb)
+            if re.search(r"<thumb_exists>(?P<link>.*)</thumb_exists>", self.html.toUtf8()).group(1) == "yes":
+                thumb = re.search(r"<thumb_link>(?P<link>.*)</thumb_link>", self.html.toUtf8()).group(1)
+            else:
+                thumb = img
+            code = "[URL=\"%s\"][IMG]%s[/IMG][/URL]"%(img, thumb)
             self.emit(SIGNAL("done(QString)"), code)
 
     def readResponseHeader(self, responseHeader):
