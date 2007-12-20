@@ -79,7 +79,7 @@ class Imagecross(QObject):
                                           .arg(self.http.errorString()))
         else:
             code = re.search(r"myspace-image-hosting-viewer-(?P<char>.)\.php\?id=(?P<id>.*)\"><img", self.html.toUtf8())
-            code = "[URL=http://www.imagecross.com/myspace-image-hosting-viewer-%s.php?id=%s][IMG]http://hosting03.imagecross.com/myspace-image-hosting-thumbs-%s/%s[/IMG][/URL]"%(code.group(1), code.group(2), code.group(1), code.group(2))
+            code = "[URL=\"http://www.imagecross.com/myspace-image-hosting-viewer-%s.php?id=%s\"][IMG]http://hosting03.imagecross.com/myspace-image-hosting-thumbs-%s/%s[/IMG][/URL]"%(code.group(1), code.group(2), code.group(1), code.group(2))
             self.emit(SIGNAL("done(QString)"), code)
 
     def readResponseHeader(self, responseHeader):
