@@ -50,9 +50,9 @@ class ImageUploader(QMainWindow):
         del i
         
     def uploadClicked(self):
-        self.uploadList = {}
+        self.uploadList = []
         for i in xrange(0, self.ui.imgList.count()):
-            self.uploadList[self.ui.imgList.item(i).text()] = self.site[str(self.ui.comboSite.currentText())]
+            self.uploadList.append(self.ui.imgList.item(i).text())
         self.ui.pbTotal.setMaximum(self.ui.imgList.count())
         self.ui.pbTotal.setValue(0)
         self.upload()
@@ -71,8 +71,8 @@ class ImageUploader(QMainWindow):
         
         self.ui.pbTotal.setValue(self.ui.pbTotal.value()+1)
         self.ui.lblTotal.setText("Uploading %d of %d"%(self.ui.pbTotal.value(),  self.ui.pbTotal.maximum()))
-        it = self.uploadList.popitem()
-        it[1].upload(it[0])
+        it = self.uploadList.pop(0)
+        self.site[str(self.ui.comboSite.currentText())].upload(it)
 
         
         
