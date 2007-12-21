@@ -15,13 +15,34 @@ class ImageUploader(QMainWindow):
         self.ui = ui.Ui_MainWindow()
         self.ui.setupUi(self)
         self.counter = 0
-        
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "Pymguploader")
         self.scanSite()
+        self.loadSettings()
+        
+        
+        
         self.connect(self.ui.btnAdd,  SIGNAL("clicked()"), self.addClicked)
         self.connect(self.ui.btnCancel, SIGNAL("clicked()"), self.cancelUpload)
         self.connect(self.ui.btnRemove,  SIGNAL("clicked()"), self.removeClicked)
         self.connect(self.ui.btnUpload,  SIGNAL("clicked()"), self.uploadClicked)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
     
+    def dropEvent(self, event):
+        for url in event.mimeData.urls():
+            print url
+        
+    def loadSettings(self):
+        if self.settings.contains("defaultsite"):
+            self.ui.comboSite.setCurrentIndex(self.ui.comboSite.findText(self.settings.value("defaultsite").toString()))
+            
+        
+    def closeEvent(self, event):
+        self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
+        event.accept()
+            
     def cancelUpload(self):
         self.uploadList = {}
         self.site[str(self.ui.comboSite.currentText())].cancelUpload()
