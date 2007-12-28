@@ -1,5 +1,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from PyQt4.Qt import *
 import os
 import sys
 import re
@@ -32,12 +33,19 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
 
     def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
-            event.acceptProposedAction()
+        event.acceptProposedAction()
     
     def dropEvent(self, event):
-        for url in event.mimeData.urls():
-            print url
+        for url in event.mimeData().urls():
+            fn = url.toLocalFile()
+            if fn.endsWith(".png", Qt.CaseInsensitive)  or \
+               fn.endsWith(".jpg", Qt.CaseInsensitive)  or \
+               fn.endsWith(".jpeg", Qt.CaseInsensitive) or \
+               fn.endsWith(".gif", Qt.CaseInsensitive)  or \
+               fn.endsWith(".tiff", Qt.CaseInsensitive) or \
+               fn.endsWith(".tif", Qt.CaseInsensitive)  or \
+               fn.endsWith(".bmp", Qt.CaseInsensitive):
+                   QListWidgetItem(QIcon(fn),  fn,  self.ui.imgList)
         
     def loadSettings(self):
         if self.settings.contains("defaultsite"):
