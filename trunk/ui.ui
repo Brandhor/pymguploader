@@ -29,7 +29,7 @@
        </size>
       </property>
       <property name="currentIndex" >
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_9" >
        <attribute name="title" >
@@ -109,8 +109,11 @@
             <property name="title" >
              <string>Position</string>
             </property>
+            <property name="checkable" >
+             <bool>false</bool>
+            </property>
             <layout class="QGridLayout" >
-             <item row="1" column="0" >
+             <item row="0" column="0" >
               <widget class="QRadioButton" name="rbUpperLeft" >
                <property name="text" >
                 <string>UpperLeft</string>
@@ -120,7 +123,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="2" >
+             <item row="0" column="2" >
               <widget class="QRadioButton" name="rbUpperRight" >
                <property name="layoutDirection" >
                 <enum>Qt::RightToLeft</enum>
@@ -130,14 +133,14 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="0" >
+             <item row="2" column="0" >
               <widget class="QRadioButton" name="rbBottomLeft" >
                <property name="text" >
                 <string>BottomLeft</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="2" >
+             <item row="2" column="2" >
               <widget class="QRadioButton" name="rbBottomRight" >
                <property name="layoutDirection" >
                 <enum>Qt::RightToLeft</enum>
@@ -147,7 +150,7 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="0" >
+             <item row="1" column="0" >
               <spacer>
                <property name="orientation" >
                 <enum>Qt::Vertical</enum>
@@ -160,7 +163,7 @@
                </property>
               </spacer>
              </item>
-             <item row="1" column="1" >
+             <item row="0" column="1" >
               <spacer>
                <property name="orientation" >
                 <enum>Qt::Horizontal</enum>
@@ -173,14 +176,14 @@
                </property>
               </spacer>
              </item>
-             <item row="5" column="0" >
+             <item row="4" column="0" >
               <widget class="QRadioButton" name="rbScaled" >
                <property name="text" >
                 <string>Scaled</string>
                </property>
               </widget>
              </item>
-             <item row="5" column="2" >
+             <item row="4" column="2" >
               <widget class="QRadioButton" name="rbTiled" >
                <property name="layoutDirection" >
                 <enum>Qt::RightToLeft</enum>
@@ -190,7 +193,7 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="0" >
+             <item row="3" column="0" >
               <spacer>
                <property name="orientation" >
                 <enum>Qt::Vertical</enum>
@@ -203,32 +206,79 @@
                </property>
               </spacer>
              </item>
+             <item row="6" column="0" >
+              <widget class="QRadioButton" name="rbCustom" >
+               <property name="text" >
+                <string>Custom</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1" colspan="2" >
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="5" column="1" >
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="7" column="0" colspan="3" >
+              <layout class="QHBoxLayout" >
+               <item>
+                <widget class="QLabel" name="labelX" >
+                 <property name="enabled" >
+                  <bool>false</bool>
+                 </property>
+                 <property name="text" >
+                  <string>X</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="watermarkX" >
+                 <property name="enabled" >
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="labelY" >
+                 <property name="enabled" >
+                  <bool>false</bool>
+                 </property>
+                 <property name="text" >
+                  <string>Y</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="watermarkY" >
+                 <property name="enabled" >
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
             </layout>
            </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" >
-            <item>
-             <widget class="QLabel" name="label_2" >
-              <property name="text" >
-               <string>X</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="watermarkX" />
-            </item>
-            <item>
-             <widget class="QLabel" name="label_3" >
-              <property name="text" >
-               <string>Y</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="watermarkY" />
-            </item>
-           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" >
