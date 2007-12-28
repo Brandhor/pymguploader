@@ -8,6 +8,8 @@ if not hasattr(sys, "frozen"):
     os.popen("pyrcc4 res.qrc -o res_rc.py").read()
 import ui
 import imgsite
+import tempfile
+from watermark import *
 
 class ImageUploader(QMainWindow):
     def __init__(self,  parent=None):
@@ -15,16 +17,19 @@ class ImageUploader(QMainWindow):
         self.ui = ui.Ui_MainWindow()
         self.ui.setupUi(self)
         self.counter = 0
+        self.watermark = ""
+        tempfile.tempdir = tempfile.mkdtemp(prefix="pymguploader")
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "Pymguploader")
         self.scanSite()
         self.loadSettings()
-        
-        
         
         self.connect(self.ui.btnAdd,  SIGNAL("clicked()"), self.addClicked)
         self.connect(self.ui.btnCancel, SIGNAL("clicked()"), self.cancelUpload)
         self.connect(self.ui.btnRemove,  SIGNAL("clicked()"), self.removeClicked)
         self.connect(self.ui.btnUpload,  SIGNAL("clicked()"), self.uploadClicked)
+        
+        self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
+        self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -41,6 +46,12 @@ class ImageUploader(QMainWindow):
         
     def closeEvent(self, event):
         self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
+        for root, dirs, files in os.walk(tempfile.tempdir, topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        os.rmdir(tempfile.tempdir)
         event.accept()
             
     def cancelUpload(self):
@@ -78,7 +89,7 @@ class ImageUploader(QMainWindow):
         self.ui.pbTotal.setValue(0)
         self.upload()
         
-    def upload(self,  code=None):
+    def upload(self, code=None):
         if code:
             self.ui.textBBCode.setText(self.ui.textBBCode.toPlainText()+code)
             self.counter += 1
@@ -93,9 +104,24 @@ class ImageUploader(QMainWindow):
         self.ui.pbTotal.setValue(self.ui.pbTotal.value()+1)
         self.ui.lblTotal.setText("Uploading %d of %d"%(self.ui.pbTotal.value(),  self.ui.pbTotal.maximum()))
         it = self.uploadList.pop(0)
+        if self.watermark:
+            it = self.doWatermark(it)           
         self.site[str(self.ui.comboSite.currentText())].upload(it)
 
-        
+    def addWatermark(self):
+        f = QFileDialog.getOpenFileName(self, "Select watermark", "", "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
+        self.watermark = f
+        self.ui.displayWatermark.setPixmap(QPixmap(f))
+            
+    def removeWatermark(self):
+        self.watermark = ""
+        self.ui.displayWatermark.setPixmap(QPixmap())    
+            
+    def doWatermark(self, it):
+        w = watermark(it, self.watermark, position=position, opacity=self.ui.spinOpacity.value())
+        fn = os.path.join(tempfile.tempdir, str(QFileInfo(it).fileName()))
+        w.save(fn)
+        return fn
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>557</height>
+    <width>748</width>
+    <height>741</height>
    </rect>
   </property>
   <property name="acceptDrops" >
@@ -21,62 +21,283 @@
   <widget class="QWidget" name="centralwidget" >
    <layout class="QVBoxLayout" >
     <item>
-     <widget class="QFrame" name="frame" >
-      <property name="frameShape" >
-       <enum>QFrame::StyledPanel</enum>
+     <widget class="QTabWidget" name="tabWidget_2" >
+      <property name="minimumSize" >
+       <size>
+        <width>0</width>
+        <height>150</height>
+       </size>
       </property>
-      <property name="frameShadow" >
-       <enum>QFrame::Raised</enum>
+      <property name="currentIndex" >
+       <number>1</number>
       </property>
-      <layout class="QHBoxLayout" >
-       <item>
-        <widget class="QListWidget" name="imgList" >
-         <property name="iconSize" >
-          <size>
-           <width>150</width>
-           <height>150</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" >
-         <item>
-          <widget class="QPushButton" name="btnAdd" >
-           <property name="text" >
-            <string>Add</string>
-           </property>
-           <property name="icon" >
-            <iconset resource="res.qrc" >:/new/prefix1/img/add.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btnRemove" >
-           <property name="text" >
-            <string>Remove</string>
-           </property>
-           <property name="icon" >
-            <iconset resource="res.qrc" >:/new/prefix1/img/delete.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-      </layout>
+      <widget class="QWidget" name="tab_9" >
+       <attribute name="title" >
+        <string>Images</string>
+       </attribute>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" >
+         <widget class="QFrame" name="frame" >
+          <property name="frameShape" >
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow" >
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" >
+           <item>
+            <widget class="QListWidget" name="imgList" >
+             <property name="iconSize" >
+              <size>
+               <width>150</width>
+               <height>150</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" >
+             <item>
+              <widget class="QPushButton" name="btnAdd" >
+               <property name="text" >
+                <string>Add</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >:/new/prefix1/img/add.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnRemove" >
+               <property name="text" >
+                <string>Remove</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >:/new/prefix1/img/delete.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_8" >
+       <attribute name="title" >
+        <string>Watermark</string>
+       </attribute>
+       <layout class="QHBoxLayout" >
+        <item>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QGroupBox" name="frame_5" >
+            <property name="title" >
+             <string>Position</string>
+            </property>
+            <layout class="QGridLayout" >
+             <item row="1" column="0" >
+              <widget class="QRadioButton" name="rbUpperLeft" >
+               <property name="text" >
+                <string>UpperLeft</string>
+               </property>
+               <property name="checked" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2" >
+              <widget class="QRadioButton" name="rbUpperRight" >
+               <property name="layoutDirection" >
+                <enum>Qt::RightToLeft</enum>
+               </property>
+               <property name="text" >
+                <string>UpperRight</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0" >
+              <widget class="QRadioButton" name="rbBottomLeft" >
+               <property name="text" >
+                <string>BottomLeft</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2" >
+              <widget class="QRadioButton" name="rbBottomRight" >
+               <property name="layoutDirection" >
+                <enum>Qt::RightToLeft</enum>
+               </property>
+               <property name="text" >
+                <string>BottomRight</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" >
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="1" column="1" >
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="5" column="0" >
+              <widget class="QRadioButton" name="rbScaled" >
+               <property name="text" >
+                <string>Scaled</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2" >
+              <widget class="QRadioButton" name="rbTiled" >
+               <property name="layoutDirection" >
+                <enum>Qt::RightToLeft</enum>
+               </property>
+               <property name="text" >
+                <string>Tiled</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0" >
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" >
+            <item>
+             <widget class="QLabel" name="label_2" >
+              <property name="text" >
+               <string>X</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="watermarkX" />
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3" >
+              <property name="text" >
+               <string>Y</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="watermarkY" />
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" >
+            <item>
+             <widget class="QLabel" name="label" >
+              <property name="text" >
+               <string>Watermark opacity</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="spinOpacity" >
+              <property name="buttonSymbols" >
+               <enum>QAbstractSpinBox::PlusMinus</enum>
+              </property>
+              <property name="maximum" >
+               <double>1.000000000000000</double>
+              </property>
+              <property name="singleStep" >
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value" >
+               <double>1.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QPushButton" name="pbAddWatermark" >
+            <property name="text" >
+             <string>Add Watermark</string>
+            </property>
+            <property name="icon" >
+             <iconset resource="res.qrc" >:/new/prefix1/img/add.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pbRemoveWatermark" >
+            <property name="text" >
+             <string>Remove Watermark</string>
+            </property>
+            <property name="icon" >
+             <iconset resource="res.qrc" >:/new/prefix1/img/delete.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="displayWatermark" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
     <item>
@@ -158,8 +379,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>555</width>
-     <height>30</height>
+     <width>748</width>
+     <height>31</height>
     </rect>
    </property>
   </widget>
