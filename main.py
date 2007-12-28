@@ -17,6 +17,10 @@ class ImageUploader(QMainWindow):
         super(ImageUploader, self).__init__(parent)
         self.ui = ui.Ui_MainWindow()
         self.ui.setupUi(self)
+        reg = QRegExp("\\d*%")
+        val = QRegExpValidator(reg, self)
+        self.ui.watermarkX.setValidator(val)
+        self.ui.watermarkY.setValidator(val)
         self.counter = 0
         self.watermark = ""
         tempfile.tempdir = tempfile.mkdtemp(prefix="pymguploader")
@@ -31,6 +35,7 @@ class ImageUploader(QMainWindow):
         
         self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
         self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
+        self.connect(self.ui.rbCustom, SIGNAL("toggled(bool)"), self.wmCustomToggled)
 
     def dragEnterEvent(self, event):
         event.acceptProposedAction()
@@ -50,10 +55,59 @@ class ImageUploader(QMainWindow):
     def loadSettings(self):
         if self.settings.contains("defaultsite"):
             self.ui.comboSite.setCurrentIndex(self.ui.comboSite.findText(self.settings.value("defaultsite").toString()))
+        
+        self.settings.beginGroup("watermark")
+        self.watermark = self.settings.value("file").toString()
+        self.ui.displayWatermark.setPixmap(QPixmap(self.watermark))
+        self.ui.spinOpacity.setValue(self.settings.value("opacity", QVariant(1)).toDouble()[0])
+        self.ui.watermarkX.setText(self.settings.value("x").toString())
+        self.ui.watermarkY.setText(self.settings.value("y").toString())
+        position = self.settings.value("position").toString()
+        
+        if position == "bottomleft":
+            self.ui.rbBottomLeft.setChecked(True)
+        elif position == "bottomright":
+            self.ui.rbBottomRight.setChecked(True)
+        elif position == "upperright":
+            self.ui.rbUpperRight.setChecked(True)
+        elif position == "upperleft":
+            self.ui.rbUpperLeft.setChecked(True)
+        elif position == "tile":
+            self.ui.rbTiled.setChecked(True)
+        elif position == "scaled":
+            self.ui.rbScaled.setChecked(True)
+        elif position == "custom":
+            self.ui.rbCustom.setChecked(True)
+            self.wmCustomToggled(True)
             
+        self.settings.endGroup()
         
     def closeEvent(self, event):
         self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
+        
+        self.settings.beginGroup("watermark")
+        self.settings.setValue("file", QVariant(self.watermark))
+        self.settings.setValue("opacity", QVariant(self.ui.spinOpacity.value()))
+        self.settings.setValue("x", QVariant(self.ui.watermarkX.text()))
+        self.settings.setValue("y", QVariant(self.ui.watermarkY.text()))
+        
+        if self.ui.rbBottomLeft.isChecked():
+            position="bottomleft"
+        elif self.ui.rbBottomRight.isChecked():
+            position="bottomright"
+        elif self.ui.rbUpperRight.isChecked():
+            position="upperright"
+        elif self.ui.rbUpperLeft.isChecked():
+            position="upperleft"
+        elif self.ui.rbTiled.isChecked():
+            position="tiled"
+        elif self.ui.rbScaled.isChecked():
+            position="scaled"
+        elif self.ui.rbCustom.isChecked():
+            position="custom"
+        self.settings.setValue("position", QVariant(position))
+        self.settings.endGroup()
+        
         for root, dirs, files in os.walk(tempfile.tempdir, topdown=False):
             for name in files:
                 os.remove(os.path.join(root, name))
@@ -126,10 +180,38 @@ class ImageUploader(QMainWindow):
         self.ui.displayWatermark.setPixmap(QPixmap())    
             
     def doWatermark(self, it):
+        if self.ui.rbBottomLeft.isChecked():
+            position="bottomleft"
+        elif self.ui.rbBottomRight.isChecked():
+            position="bottomright"
+        elif self.ui.rbUpperRight.isChecked():
+            position="upperright"
+        elif self.ui.rbUpperLeft.isChecked():
+            position="upperleft"
+        elif self.ui.rbTiled.isChecked():
+            position="tiled"
+        elif self.ui.rbScaled.isChecked():
+            position="scaled"
+        elif self.ui.rbCustom.isChecked():
+            position=(self.ui.watermarkX.text(), self.ui.watermarkY.text())
+        
         w = watermark(it, self.watermark, position=position, opacity=self.ui.spinOpacity.value())
         fn = os.path.join(tempfile.tempdir, str(QFileInfo(it).fileName()))
         w.save(fn)
         return fn
+    
+    def wmCustomToggled(self, checked):
+        if checked:
+            self.ui.watermarkX.setEnabled(True)
+            self.ui.watermarkY.setEnabled(True)
+            self.ui.labelX.setEnabled(True)
+            self.ui.labelY.setEnabled(True)
+        else:
+            self.ui.watermarkX.setEnabled(False)
+            self.ui.watermarkY.setEnabled(False)
+            self.ui.labelX.setEnabled(False)
+            self.ui.labelY.setEnabled(False)
+        
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
