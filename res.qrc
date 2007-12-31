@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/new/prefix1" >
+        <file>img/add-folder.png</file>
         <file>img/add.png</file>
         <file>img/cancel.png</file>
         <file>img/delete.png</file>
         <file>img/icon.png</file>
+        <file>img/trash.png</file>
         <file>img/upload.png</file>
     </qresource>
 </RCC>

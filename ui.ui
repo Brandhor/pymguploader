@@ -68,12 +68,32 @@
               </widget>
              </item>
              <item>
+              <widget class="QPushButton" name="btnAddFolder" >
+               <property name="text" >
+                <string>Add Folder</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >:/new/prefix1/img/add-folder.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="btnRemove" >
                <property name="text" >
                 <string>Remove</string>
                </property>
                <property name="icon" >
                 <iconset resource="res.qrc" >:/new/prefix1/img/delete.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnDelete" >
+               <property name="text" >
+                <string>Delete Images</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >:/new/prefix1/img/trash.png</iconset>
                </property>
               </widget>
              </item>
@@ -430,7 +450,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>31</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
