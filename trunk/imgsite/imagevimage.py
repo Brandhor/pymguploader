@@ -4,9 +4,9 @@ from PyQt4.QtNetwork import *
 import mimetypes
 import re
 
-class Uploadgeek(QObject):
+class Imagevimage(QObject):
     def __init__(self, parent):
-        super(Uploadgeek, self).__init__(parent)
+        super(Imagevimage, self).__init__(parent)
         self.http = QHttp(parent)
         
         self.connect(self.http, SIGNAL("requestFinished(int, bool)"),
@@ -20,7 +20,7 @@ class Uploadgeek(QObject):
     
     def upload(self, path):
         self.html = QString()
-        url = QUrl("http://uploadgeek.com/index.php")
+        url = QUrl("http://www.imagevimage.com/process.php")
         fp = QFile(path)
         fp.open(QIODevice.ReadOnly)
         
@@ -31,8 +31,8 @@ class Uploadgeek(QObject):
         if  not url.userName().isEmpty():
             self.http.setUser(url.userName(), url.password())
     
-        header = QHttpRequestHeader("POST",  "/index.php",  1,  1)
-        header.setValue("Host", "uploadgeek.com");
+        header = QHttpRequestHeader("POST",  "/process.php",  1,  1)
+        header.setValue("Host", "www.imagevimage.com");
         header.setValue("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
         header.setValue("Keep-Alive", "300");
         header.setValue("Connection", "keep-alive");
@@ -43,12 +43,7 @@ class Uploadgeek(QObject):
         bytes = QByteArray()
         bytes.append("--AaB03x\r\n")
         bytes.append("Content-Disposition: ")
-        bytes.append("form-data; name=\"action\"\r\n")
-        bytes.append("\r\n")
-        bytes.append("upload\r\n")
-        bytes.append("--AaB03x\r\n")
-        bytes.append("Content-Disposition: ")
-        bytes.append("form-data; name=\"file1\"; filename=\"" + QByteArray(QFileInfo(path).fileName().toUtf8()) + "\"\r\n")
+        bytes.append("form-data; name=\"userfile[]\"; filename=\"" + QByteArray(QFileInfo(path).fileName().toUtf8()) + "\"\r\n")
         bytes.append("Content-Type: %s\r\n"%mimetypes.guess_type(str(path))[0])
         bytes.append("\r\n")
         bytes.append(fp.readAll())
@@ -79,25 +74,19 @@ class Uploadgeek(QObject):
             return
     
         if error:
-            QMessageBox.information(self.parent(), self.tr("Uploadgeek"),
+            QMessageBox.information(self, self.tr("Imagevimage"),
                                           self.tr("Upload failed: %1.")
                                           .arg(self.http.errorString()))
         else:
-            fp = open("img.html", "w")
-            fp.write(self.html.toUtf8())
-            fp.close()
-            img = QUrl(QString(re.search(r"<input type=\"text\" id=\"direct\" value=\"(?P<value>.*)\" onfocus", self.html.toUtf8()).group(1))).toEncoded()
-
-            thumb = QUrl(QString(re.search(r"<input type=\"text\" id=\"forum\" value=\"(?P<value>.*thumbs.*)\" onfocus", self.html.toUtf8()).group(1))).toEncoded()
-            code = "[URL=\"%s\"][IMG]%s[/IMG][/URL]"%(img, thumb)
+            f = open("img.html",  "w")
+            f.write(self.html.toUtf8())
+            f.close()
+            code = re.search(r"value=\"(?P<value>\[url=.*thumbs.*\[/url\])\">", self.html.toUtf8()).group(1)
             self.emit(SIGNAL("done(QString)"), code)
 
     def readResponseHeader(self, responseHeader):
-        if responseHeader.statusCode() == 302:
-            self.httpRequestAborted = False
-            self.httpGetId = self.http.get(responseHeader.value("Location"))
-        elif responseHeader.statusCode() != 200:
-            QMessageBox.information(self.parent(), self.tr("Uploadgeek"),
+        if responseHeader.statusCode() != 200:
+            QMessageBox.information(self, self.tr("Imagevimage"),
                                           self.tr("Upload failed: %1.")
                                           .arg(responseHeader.reasonPhrase()))
             self.httpRequestAborted = True
@@ -111,5 +100,5 @@ class Uploadgeek(QObject):
         self.parent().ui.pbPartial.setValue(done)
     
     def __str__(self):
-        return "Uploadgeek"
+        return "Imagevimage"
     
