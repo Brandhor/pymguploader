@@ -29,14 +29,34 @@ class ImageUploader(QMainWindow):
         self.loadSettings()
         
         self.connect(self.ui.btnAdd,  SIGNAL("clicked()"), self.addClicked)
+        self.connect(self.ui.btnAddFolder,  SIGNAL("clicked()"),  self.addFolderClicked)
         self.connect(self.ui.btnCancel, SIGNAL("clicked()"), self.cancelUpload)
         self.connect(self.ui.btnRemove,  SIGNAL("clicked()"), self.removeClicked)
         self.connect(self.ui.btnUpload,  SIGNAL("clicked()"), self.uploadClicked)
+        self.connect(self.ui.btnDelete,  SIGNAL("clicked()"),  self.deleteImages)
         
         self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
         self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
         self.connect(self.ui.rbCustom, SIGNAL("toggled(bool)"), self.wmCustomToggled)
-
+    
+    def deleteImages(self):
+        res = QMessageBox.question(self,  "Warning", "Are you sure you want to delete these images?", QMessageBox.Ok |QMessageBox.Cancel)
+        
+        if res == QMessageBox.Ok:
+            for i in xrange(0, self.ui.imgList.count()):
+                os.remove(str(self.ui.imgList.item(i).text()))
+            self.ui.imgList.clear()
+            
+    def addFolderClicked(self):
+        dir = QFileDialog.getExistingDirectory(self, "Select Directory")
+        filters = QStringList()
+        for f in ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.tif", "*.tiff"]:
+            filters.append(f)
+        iList = QDir(dir).entryInfoList(filters)
+        
+        for f in iList:
+            QListWidgetItem(QIcon(f.filePath()), f.filePath(), self.ui.imgList)
+        
     def dragEnterEvent(self, event):
         event.acceptProposedAction()
     
