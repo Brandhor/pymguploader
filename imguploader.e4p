@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.0.dtd">
 <!-- eric4 project file for project imguploader -->
-<!-- Saved: 2007-12-19, 14:51:38 -->
-<!-- Copyright (C) 2007 ,  -->
+<!-- Saved: 2008-01-03, 01:41:28 -->
+<!-- Copyright (C) 2008 ,  -->
 <Project version="4.0">
   <ProgLanguage mixed="0">Python</ProgLanguage>
   <UIType>Qt4</UIType>
@@ -17,6 +17,31 @@
     <Source>
       <Name>ui.py</Name>
     </Source>
+    <Source>
+      <Name>res_rc.py</Name>
+    </Source>
+    <Source>
+      <Name>setup.py</Name>
+    </Source>
+    <Source>
+      <Name>watermark.py</Name>
+    </Source>
+    <Source>
+      <Dir>imgsite</Dir>
+      <Name>imagecross.py</Name>
+    </Source>
+    <Source>
+      <Dir>imgsite</Dir>
+      <Name>imageshack.py</Name>
+    </Source>
+    <Source>
+      <Dir>imgsite</Dir>
+      <Name>uploadgeek.py</Name>
+    </Source>
+    <Source>
+      <Dir>imgsite</Dir>
+      <Name>__init__.py</Name>
+    </Source>
   </Sources>
   <Forms>
     <Form>
@@ -26,6 +51,9 @@
   <Translations>
   </Translations>
   <Resources>
+    <Resource>
+      <Name>res.qrc</Name>
+    </Resource>
   </Resources>
   <Interfaces>
   </Interfaces>

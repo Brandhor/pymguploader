@@ -31,7 +31,7 @@
       <property name="currentIndex" >
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tab_9" >
+      <widget class="QWidget" name="tabImages" >
        <attribute name="title" >
         <string>Images</string>
        </attribute>
@@ -117,7 +117,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_8" >
+      <widget class="QWidget" name="tabWatermark" >
        <attribute name="title" >
         <string>Watermark</string>
        </attribute>
@@ -352,16 +352,25 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="displayWatermark" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QGroupBox" name="groupBox" >
+            <property name="title" >
+             <string>Preview</string>
             </property>
-            <property name="text" >
-             <string/>
-            </property>
+            <layout class="QHBoxLayout" >
+             <item>
+              <widget class="QLabel" name="displayWatermark" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -450,7 +459,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
