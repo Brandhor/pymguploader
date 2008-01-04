@@ -11,6 +11,7 @@ import ui
 import imgsite
 import tempfile
 from watermark import *
+from ImageQt import ImageQt
 
 class ImageUploader(QMainWindow):
     def __init__(self,  parent=None):
@@ -38,6 +39,21 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
         self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
         self.connect(self.ui.rbCustom, SIGNAL("toggled(bool)"), self.wmCustomToggled)
+        self.connect(self.ui.tabWidget_2,  SIGNAL("currentChanged(int)"), self.tabChanged)
+        self.connect(self.ui.rbUpperLeft,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbBottomLeft,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbUpperRight,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbBottomRight,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbScaled,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbTiled,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbCustom,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.watermarkX,  SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
+        self.connect(self.ui.watermarkY,  SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
+        self.connect(self.ui.spinOpacity,  SIGNAL("valueChanged(double)"),  self.updateWatermarkPreview)
+    
+    def tabChanged(self, index):
+        if index == 1: #watermark tab
+            self.updateWatermarkPreview()
     
     def deleteImages(self):
         res = QMessageBox.question(self,  "Warning", "Are you sure you want to delete these images?", QMessageBox.Ok |QMessageBox.Cancel)
@@ -57,6 +73,10 @@ class ImageUploader(QMainWindow):
         for f in iList:
             QListWidgetItem(QIcon(f.filePath()), f.filePath(), self.ui.imgList)
         
+    def resizeEvent(self, event):
+        if self.ui.tabWidget_2.currentIndex() == 1: #watermark tab
+            self.updateWatermarkPreview()
+    
     def dragEnterEvent(self, event):
         event.acceptProposedAction()
     
@@ -78,7 +98,6 @@ class ImageUploader(QMainWindow):
         
         self.settings.beginGroup("watermark")
         self.watermark = self.settings.value("file").toString()
-        self.ui.displayWatermark.setPixmap(QPixmap(self.watermark))
         self.ui.spinOpacity.setValue(self.settings.value("opacity", QVariant(1)).toDouble()[0])
         self.ui.watermarkX.setText(self.settings.value("x").toString())
         self.ui.watermarkY.setText(self.settings.value("y").toString())
@@ -187,13 +206,15 @@ class ImageUploader(QMainWindow):
         self.ui.lblTotal.setText("Uploading %d of %d"%(self.ui.pbTotal.value(),  self.ui.pbTotal.maximum()))
         it = self.uploadList.pop(0)
         if self.watermark:
-            it = self.doWatermark(it)           
+            w = self.doWatermark(it)     
+            it = os.path.join(tempfile.tempdir, str(QFileInfo(it).fileName()))
+            w.save(it)
         self.site[str(self.ui.comboSite.currentText())].upload(it)
 
     def addWatermark(self):
         f = QFileDialog.getOpenFileName(self, "Select watermark", "", "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
         self.watermark = f
-        self.ui.displayWatermark.setPixmap(QPixmap(f))
+        self.updateWatermarkPreview()
             
     def removeWatermark(self):
         self.watermark = ""
@@ -216,9 +237,7 @@ class ImageUploader(QMainWindow):
             position=(self.ui.watermarkX.text(), self.ui.watermarkY.text())
         
         w = watermark(it, self.watermark, position=position, opacity=self.ui.spinOpacity.value())
-        fn = os.path.join(tempfile.tempdir, str(QFileInfo(it).fileName()))
-        w.save(fn)
-        return fn
+        return w
     
     def wmCustomToggled(self, checked):
         if checked:
@@ -231,6 +250,16 @@ class ImageUploader(QMainWindow):
             self.ui.watermarkY.setEnabled(False)
             self.ui.labelX.setEnabled(False)
             self.ui.labelY.setEnabled(False)
+        
+    def updateWatermarkPreview(self, *args,  **kwargs):
+        if self.ui.imgList.count() == 0 and self.watermark:
+            self.ui.displayWatermark.setPixmap(QPixmap(self.watermark))
+        elif not self.watermark:
+            return
+        else:
+            w = ImageQt(self.doWatermark(self.ui.imgList.item(0).text()))
+            w = w.scaled(self.ui.displayWatermark.size())
+            self.ui.displayWatermark.setPixmap(QPixmap.fromImage(w))
         
         
 if __name__ == '__main__':
