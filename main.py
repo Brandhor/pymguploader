@@ -24,6 +24,7 @@ class ImageUploader(QMainWindow):
         self.ui.watermarkY.setValidator(val)
         self.counter = 0
         self.watermark = ""
+        self.lastDir = ""
         tempfile.tempdir = tempfile.mkdtemp(prefix="pymguploader")
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "Pymguploader")
         self.scanSite()
@@ -64,7 +65,7 @@ class ImageUploader(QMainWindow):
             self.ui.imgList.clear()
             
     def addFolderClicked(self):
-        dir = QFileDialog.getExistingDirectory(self, "Select Directory")
+        dir = QFileDialog.getExistingDirectory(self, "Select Directory", self.lastDir)
         filters = QStringList()
         for f in ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.tif", "*.tiff"]:
             filters.append(f)
@@ -96,6 +97,8 @@ class ImageUploader(QMainWindow):
         if self.settings.contains("defaultsite"):
             self.ui.comboSite.setCurrentIndex(self.ui.comboSite.findText(self.settings.value("defaultsite").toString()))
         
+        self.lastDir = self.settings.value("lastDir").toString()
+        
         self.settings.beginGroup("watermark")
         self.watermark = self.settings.value("file").toString()
         self.ui.spinOpacity.setValue(self.settings.value("opacity", QVariant(1)).toDouble()[0])
@@ -123,6 +126,7 @@ class ImageUploader(QMainWindow):
         
     def closeEvent(self, event):
         self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
+        self.settings.setValue("lastDir", QVariant(self.lastDir))
         
         self.settings.beginGroup("watermark")
         self.settings.setValue("file", QVariant(self.watermark))
@@ -174,10 +178,13 @@ class ImageUploader(QMainWindow):
             self.ui.comboSite.addItem(s)
                 
     def addClicked(self):
-        ls = QFileDialog.getOpenFileNames(self, "Select images to upload", "", "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
+        ls = QFileDialog.getOpenFileNames(self, "Select images to upload", 
+                                           self.lastDir,
+                                           "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
         for l in ls:
             QListWidgetItem(QIcon(l), l, self.ui.imgList)
-            
+            self.lastDir = QFileInfo(l).absolutePath()
+        
     def removeClicked(self):
         i = self.ui.imgList.takeItem(self.ui.imgList.currentRow())
         del i
@@ -212,7 +219,14 @@ class ImageUploader(QMainWindow):
         self.site[str(self.ui.comboSite.currentText())].upload(it)
 
     def addWatermark(self):
-        f = QFileDialog.getOpenFileName(self, "Select watermark", "", "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
+        if not self.watermark:
+            last = self.lastDir
+        else:
+            last = QFileInfo(self.watermark).absolutePath()
+
+        f = QFileDialog.getOpenFileName(self, "Select watermark", 
+                                         last,
+                                         "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
         self.watermark = f
         self.updateWatermarkPreview()
             
