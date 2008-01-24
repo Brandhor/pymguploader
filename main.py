@@ -65,14 +65,17 @@ class ImageUploader(QMainWindow):
             self.ui.imgList.clear()
             
     def addFolderClicked(self):
-        dir = QFileDialog.getExistingDirectory(self, "Select Directory", self.lastDir)
+        fDir = QFileDialog.getExistingDirectory(self, "Select Directory", self.lastDir)
         filters = QStringList()
         for f in ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.tif", "*.tiff"]:
             filters.append(f)
-        iList = QDir(dir).entryInfoList(filters)
-        
+        iList = QDir(fDir).entryInfoList(filters)
+
         for f in iList:
             QListWidgetItem(QIcon(f.filePath()), f.filePath(), self.ui.imgList)
+
+        if fDir:
+            self.lastDir = fDir
         
     def resizeEvent(self, event):
         if self.ui.tabWidget_2.currentIndex() == 1: #watermark tab
