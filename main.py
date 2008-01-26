@@ -22,9 +22,9 @@ class ImageUploader(QMainWindow):
         val = QRegExpValidator(reg, self)
         self.ui.watermarkX.setValidator(val)
         self.ui.watermarkY.setValidator(val)
-        self.counter = 0
         self.watermark = ""
         self.lastDir = ""
+        self.codeList = []
         tempfile.tempdir = tempfile.mkdtemp(prefix="pymguploader")
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "Pymguploader")
         self.scanSite()
@@ -51,6 +51,7 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.watermarkX,  SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
         self.connect(self.ui.watermarkY,  SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
         self.connect(self.ui.spinOpacity,  SIGNAL("valueChanged(double)"),  self.updateWatermarkPreview)
+        self.connect(self.ui.spinImg,  SIGNAL("valueChanged(int)"),  self.updateList)
     
     def tabChanged(self, index):
         if index == 1: #watermark tab
@@ -101,6 +102,7 @@ class ImageUploader(QMainWindow):
             self.ui.comboSite.setCurrentIndex(self.ui.comboSite.findText(self.settings.value("defaultsite").toString()))
         
         self.lastDir = self.settings.value("lastDir").toString()
+        self.ui.spinImg.setValue(self.settings.value("numImg", QVariant(4)).toInt()[0])
         
         self.settings.beginGroup("watermark")
         self.watermark = self.settings.value("file").toString()
@@ -130,6 +132,7 @@ class ImageUploader(QMainWindow):
     def closeEvent(self, event):
         self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
         self.settings.setValue("lastDir", QVariant(self.lastDir))
+        self.settings.setValue("numImg", QVariant(self.ui.spinImg.value()))
         
         self.settings.beginGroup("watermark")
         self.settings.setValue("file", QVariant(self.watermark))
@@ -194,6 +197,7 @@ class ImageUploader(QMainWindow):
         
     def uploadClicked(self):
         self.uploadList = []
+        self.codeList = []
         for i in xrange(0, self.ui.imgList.count()):
             self.uploadList.append(self.ui.imgList.item(i).text())
         self.ui.pbTotal.setMaximum(self.ui.imgList.count())
@@ -202,12 +206,8 @@ class ImageUploader(QMainWindow):
         
     def upload(self, code=None):
         if code:
-            self.ui.textBBCode.setText(self.ui.textBBCode.toPlainText()+code)
-            self.counter += 1
-            if self.counter == 4:
-                self.ui.textBBCode.setText(self.ui.textBBCode.toPlainText()+"\n")
-                self.counter = 0
-                
+            self.codeList += [str(code)]
+            self.updateList()
                 
         if not len(self.uploadList):
             return
@@ -221,6 +221,17 @@ class ImageUploader(QMainWindow):
             w.save(it)
         self.site[str(self.ui.comboSite.currentText())].upload(it)
 
+    def updateList(self,  value=None):
+        self.ui.textBBCode.clear()
+        i = 0
+        for code in self.codeList:
+            self.ui.textBBCode.setText(self.ui.textBBCode.toPlainText()+code)
+            if i == self.ui.spinImg.value()-1:
+                self.ui.textBBCode.setText(self.ui.textBBCode.toPlainText()+"\n")
+                i = 0
+            else:
+                i += 1
+        
     def addWatermark(self):
         if not self.watermark:
             last = self.lastDir

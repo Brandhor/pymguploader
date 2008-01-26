@@ -399,6 +399,40 @@
     <item>
      <layout class="QHBoxLayout" >
       <item>
+       <widget class="QLabel" name="label_2" >
+        <property name="text" >
+         <string>Images per line</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinImg" >
+        <property name="minimum" >
+         <number>1</number>
+        </property>
+        <property name="value" >
+         <number>4</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" >
+      <item>
        <widget class="QComboBox" name="comboSite" />
       </item>
       <item>
