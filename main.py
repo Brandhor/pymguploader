@@ -91,7 +91,9 @@ class ImageUploader(QMainWindow):
         iList = QDir(fDir).entryInfoList(filters)
 
         for f in iList:
-            QListWidgetItem(QIcon(f.filePath()), f.filePath(), self.ui.imgList)
+            im = self.image(f.filePath()).copy()
+            ico = QIcon(QPixmap.fromImage(im))
+            QListWidgetItem(ico, f.filePath(), self.ui.imgList)
             self.addCoverFlowItem(f)
 
         if fDir:
@@ -114,8 +116,10 @@ class ImageUploader(QMainWindow):
                fn.endsWith(".tiff", Qt.CaseInsensitive) or \
                fn.endsWith(".tif", Qt.CaseInsensitive)  or \
                fn.endsWith(".bmp", Qt.CaseInsensitive):
-                   QListWidgetItem(QIcon(fn),  fn,  self.ui.imgList)
-                   self.addCoverFlowItem(QFileInfo(fn))
+                    im = self.image(fn).copy()
+                    ico = QIcon(QPixmap.fromImage(im))
+                    QListWidgetItem(ico,  fn,  self.ui.imgList)
+                    self.addCoverFlowItem(QFileInfo(fn))
         
     def loadSettings(self):
         if self.settings.contains("defaultsite"):
@@ -211,7 +215,9 @@ class ImageUploader(QMainWindow):
                                            self.lastDir,
                                            "Images (*.png *.jpg *.jpeg *.gif *.bmp *.tif *.tiff);; All *.*")
         for l in ls:
-            QListWidgetItem(QIcon(l), l, self.ui.imgList)
+            im = self.image(l).copy()
+            ico = QIcon(QPixmap.fromImage(im))
+            QListWidgetItem(ico, l, self.ui.imgList)
             self.addCoverFlowItem(QFileInfo(l))
             self.lastDir = QFileInfo(l).absolutePath()
         
@@ -317,7 +323,7 @@ class ImageUploader(QMainWindow):
         
     def updateWatermarkPreview(self, *args,  **kwargs):
         if self.ui.imgList.count() == 0 and self.watermark:
-            self.ui.displayWatermark.setPixmap(QPixmap(self.watermark))
+            self.ui.displayWatermark.setPixmap(QPixmap.fromImage(self.image(self.watermark)))
         elif not self.watermark:
             return
         else:
@@ -327,11 +333,18 @@ class ImageUploader(QMainWindow):
         
         
     def addCoverFlowItem(self, fileInfo):
-        item = QLCoverFlowItem(QImage(fileInfo.absoluteFilePath()).scaledToWidth(200, Qt.SmoothTransformation))
-	item.setTitle(fileInfo.absoluteFilePath())
-	item.setComment(str(fileInfo.size()/1024)+"K")
-	self.coverFlow.add(item)
-        
+        item = QLCoverFlowItem(self.image(fileInfo.absoluteFilePath()).scaledToWidth(200, Qt.SmoothTransformation))
+        item.setTitle(fileInfo.absoluteFilePath())
+        item.setComment(str(fileInfo.size()/1024)+"K")
+        self.coverFlow.add(item)
+    
+    def image(self, path):
+        im = QImage()
+        try:
+            im = ImageQt(path)
+        except:
+            im = QImage(path)
+        return im
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
