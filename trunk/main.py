@@ -22,6 +22,7 @@ class ImageUploader(QMainWindow):
         self.ui.setupUi(self)
         self.coverFlow = QLCoverFlow()
         self.coverFlow.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.coverFlow.setFocusPolicy(Qt.ClickFocus)
         self.coverFlow.hide()
         self.ui.hboxlayout.insertWidget(0, self.coverFlow)
         reg = QRegExp("\\d*%")
