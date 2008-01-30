@@ -1,9 +1,10 @@
 #!/bin/bash
-../Desktop/cx_Freeze-3.0.3/FreezePython --install-dir=dist main.py --include-modules=sip --include-modules=imgsite.imagecross
+../Desktop/cx_Freeze-3.0.3/FreezePython --install-dir=dist main.py --include-modules=sip --include-modules=imaging --include-modules=PictureFlow --include-modules=ImageQt
 cp dist/* imguploader.app/Contents/MacOS/
 install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/Frameworks/QtCore.framework/Versions/4/QtCore
 install_name_tool -id @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui imguploader.app/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
 install_name_tool -id @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork imguploader.app/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
+install_name_tool -id @executable_path/../Frameworks/QLCoverFlow.framework/Versions/0/QLCoverFlowk imguploader.app/Contents/Frameworks/QLCoverFlow.framework/Versions/0/QLCoverFlow
 
 install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/MacOS/PyQt4.QtCore.so
 
@@ -15,4 +16,20 @@ install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtNetwork.framework/
 
 install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
 install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
+
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/Frameworks/QLCoverFlow.framework/Versions/0/QLCoverFlow
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui imguploader.app/Contents/Frameworks/QLCoverFlow.framework/Versions/0/QLCoverFlow
+
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/MacOS/PictureFlow.so
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui imguploader.app/Contents/MacOS/PictureFlow.so
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QLCoverFlow.framework/Versions/0/QLCoverFlow @executable_path/../Frameworks/QLCoverFlow.framework/Versions/0/QLCoverFlow imguploader.app/Contents/MacOS/PictureFlow.so
+
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/MacOS/QLCoverFlow.so
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui imguploader.app/Contents/MacOS/QLCoverFlow.so
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QLCoverFlow.framework/Versions/0/QLCoverFlow @executable_path/../Frameworks/QLCoverFlow.framework/Versions/0/QLCoverFlow imguploader.app/Contents/MacOS/QLCoverFlow.so
+
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore imguploader.app/Contents/MacOS/QLCoverFlowItem.so
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui imguploader.app/Contents/MacOS/QLCoverFlowItem.so
+install_name_tool -change /usr/local/Trolltech/Qt-4.3.3/lib/QLCoverFlow.framework/Versions/0/QLCoverFlow @executable_path/../Frameworks/QLCoverFlow.framework/Versions/0/QLCoverFlow imguploader.app/Contents/MacOS/QLCoverFlowItem.so
+
 #hdiutil create -srcfolder imguploader imguploader.dmg
