@@ -1,4 +1,6 @@
 from imagecross import Imagecross
 from imageshack import Imageshack
-from uploadgeek import Uploadgeek
+from uploadgeekcom import UploadgeekCom
+from uploadgeeknl import UploadgeekNl
+
 
