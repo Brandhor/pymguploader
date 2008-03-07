@@ -4,9 +4,9 @@ from PyQt4.QtNetwork import *
 import mimetypes
 import re
 
-class Uploadgeek(QObject):
+class UploadgeekCom(QObject):
     def __init__(self, parent):
-        super(Uploadgeek, self).__init__(parent)
+        super(UploadgeekCom, self).__init__(parent)
         self.http = QHttp(parent)
         
         self.connect(self.http, SIGNAL("requestFinished(int, bool)"),
@@ -79,7 +79,7 @@ class Uploadgeek(QObject):
             return
     
         if error:
-            QMessageBox.information(self.parent(), self.tr("Uploadgeek"),
+            QMessageBox.information(self.parent(), self.tr("Uploadgeek.com"),
                                           self.tr("Upload failed: %1.")
                                           .arg(self.http.errorString()))
         else:
@@ -97,7 +97,7 @@ class Uploadgeek(QObject):
             self.httpRequestAborted = False
             self.httpGetId = self.http.get(responseHeader.value("Location"))
         elif responseHeader.statusCode() != 200:
-            QMessageBox.information(self.parent(), self.tr("Uploadgeek"),
+            QMessageBox.information(self.parent(), self.tr("Uploadgeek.com"),
                                           self.tr("Upload failed: %1.")
                                           .arg(responseHeader.reasonPhrase()))
             self.httpRequestAborted = True
@@ -111,5 +111,5 @@ class Uploadgeek(QObject):
         self.parent().ui.pbPartial.setValue(done)
     
     def __str__(self):
-        return "Uploadgeek"
+        return "Uploadgeek.com"
     

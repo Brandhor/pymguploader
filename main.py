@@ -10,21 +10,31 @@ if not hasattr(sys, "frozen"):
 import ui
 import imgsite
 import tempfile
+import postmarkup
 from watermark import *
 from ImageQt import ImageQt
-from QLCoverFlow import QLCoverFlow
-from QLCoverFlowItem import QLCoverFlowItem
+try:
+    from QLCoverFlow import QLCoverFlow
+    from QLCoverFlowItem import QLCoverFlowItem
+    USE_COVERFLOW = True
+except:
+    USE_COVERFLOW = False
 
 class ImageUploader(QMainWindow):
     def __init__(self,  parent=None):
         super(ImageUploader, self).__init__(parent)
         self.ui = ui.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.coverFlow = QLCoverFlow()
-        self.coverFlow.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.coverFlow.setFocusPolicy(Qt.ClickFocus)
-        self.coverFlow.hide()
-        self.ui.hboxlayout.insertWidget(0, self.coverFlow)
+        if USE_COVERFLOW:
+            self.coverFlow = QLCoverFlow()
+            self.coverFlow.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            self.coverFlow.setFocusPolicy(Qt.ClickFocus)
+            self.coverFlow.hide()
+            self.ui.hboxlayout.insertWidget(0, self.coverFlow)
+            self.connect(self.ui.btnCoverFlow,  SIGNAL("clicked()"),  self.toggleCoverFlow)
+        else:
+            self.ui.btnCoverFlow.hide()
+        
         reg = QRegExp("\\d*%")
         val = QRegExpValidator(reg, self)
         self.ui.watermarkX.setValidator(val)
@@ -43,7 +53,7 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.btnRemove,  SIGNAL("clicked()"), self.removeClicked)
         self.connect(self.ui.btnUpload,  SIGNAL("clicked()"), self.uploadClicked)
         self.connect(self.ui.btnDelete,  SIGNAL("clicked()"),  self.deleteImages)
-        self.connect(self.ui.btnCoverFlow,  SIGNAL("clicked()"),  self.toggleCoverFlow)
+        
         
         self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
         self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
@@ -61,14 +71,15 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.spinOpacity,  SIGNAL("valueChanged(double)"),  self.updateWatermarkPreview)
         
         self.connect(self.ui.spinImg,  SIGNAL("valueChanged(int)"),  self.updateList)
-    
+        
     def toggleCoverFlow(self):
-        if self.ui.btnCoverFlow.isChecked():
-            self.coverFlow.show()
-            self.ui.imgList.hide()
-        else:
-            self.coverFlow.hide()
-            self.ui.imgList.show()
+        if USE_COVERFLOW:
+            if self.ui.btnCoverFlow.isChecked():
+                self.coverFlow.show()
+                self.ui.imgList.hide()
+            else:
+                self.coverFlow.hide()
+                self.ui.imgList.show()
     
     def tabChanged(self, index):
         if index == 1: #watermark tab
@@ -81,7 +92,8 @@ class ImageUploader(QMainWindow):
             for i in xrange(0, self.ui.imgList.count()):
                 os.remove(str(self.ui.imgList.item(i).text()))
             self.ui.imgList.clear()
-            self.coverFlow.clear()
+            if USE_COVERFLOW:
+                self.coverFlow.clear()
             
     def addFolderClicked(self):
         fDir = QFileDialog.getExistingDirectory(self, "Select Directory", self.lastDir)
@@ -94,7 +106,8 @@ class ImageUploader(QMainWindow):
             im = self.image(f.filePath()).copy()
             ico = QIcon(QPixmap.fromImage(im))
             QListWidgetItem(ico, f.filePath(), self.ui.imgList)
-            self.addCoverFlowItem(f)
+            if USE_COVERFLOW:
+                self.addCoverFlowItem(f)
 
         if fDir:
             self.lastDir = fDir
@@ -119,7 +132,8 @@ class ImageUploader(QMainWindow):
                     im = self.image(fn).copy()
                     ico = QIcon(QPixmap.fromImage(im))
                     QListWidgetItem(ico,  fn,  self.ui.imgList)
-                    self.addCoverFlowItem(QFileInfo(fn))
+                    if USE_COVERFLOW:
+                        self.addCoverFlowItem(QFileInfo(fn))
         
     def loadSettings(self):
         if self.settings.contains("defaultsite"):
@@ -127,8 +141,9 @@ class ImageUploader(QMainWindow):
         
         self.lastDir = self.settings.value("lastDir").toString()
         self.ui.spinImg.setValue(self.settings.value("numImg", QVariant(4)).toInt()[0])
-        self.ui.btnCoverFlow.setChecked(self.settings.value("coverFlow", QVariant(False)).toBool())
-        self.toggleCoverFlow()
+        if USE_COVERFLOW:
+            self.ui.btnCoverFlow.setChecked(self.settings.value("coverFlow", QVariant(False)).toBool())
+            self.toggleCoverFlow()
         
         self.settings.beginGroup("watermark")
         self.watermark = self.settings.value("file").toString()
@@ -159,7 +174,8 @@ class ImageUploader(QMainWindow):
         self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
         self.settings.setValue("lastDir", QVariant(self.lastDir))
         self.settings.setValue("numImg", QVariant(self.ui.spinImg.value()))
-        self.settings.setValue("coverFlow", QVariant(self.ui.btnCoverFlow.isChecked()))
+        if USE_COVERFLOW:
+            self.settings.setValue("coverFlow", QVariant(self.ui.btnCoverFlow.isChecked()))
         
         self.settings.beginGroup("watermark")
         self.settings.setValue("file", QVariant(self.watermark))
@@ -218,7 +234,8 @@ class ImageUploader(QMainWindow):
             im = self.image(l).copy()
             ico = QIcon(QPixmap.fromImage(im))
             QListWidgetItem(ico, l, self.ui.imgList)
-            self.addCoverFlowItem(QFileInfo(l))
+            if USE_COVERFLOW:
+                self.addCoverFlowItem(QFileInfo(l))
             self.lastDir = QFileInfo(l).absolutePath()
         
     def removeClicked(self):
@@ -231,11 +248,12 @@ class ImageUploader(QMainWindow):
                 self.coverFlow.remove(cfi)
         else:
             item = self.ui.imgList.takeItem(self.ui.imgList.currentRow())
-            for k in xrange(0, self.coverFlow.size()):
-                if self.coverFlow.at(k).title() == item.text():
-                    del item
-                    self.coverFlow.remove(k)
-                    break
+            if USE_COVERFLOW:
+                for k in xrange(0, self.coverFlow.size()):
+                    if self.coverFlow.at(k).title() == item.text():
+                        del item
+                        self.coverFlow.remove(k)
+                        break
             
     def uploadClicked(self):
         self.uploadList = []
@@ -333,10 +351,11 @@ class ImageUploader(QMainWindow):
         
         
     def addCoverFlowItem(self, fileInfo):
-        item = QLCoverFlowItem(self.image(fileInfo.absoluteFilePath()).scaledToWidth(200, Qt.SmoothTransformation))
-        item.setTitle(fileInfo.absoluteFilePath())
-        item.setComment(str(fileInfo.size()/1024)+"K")
-        self.coverFlow.add(item)
+        if USE_COVERFLOW:
+            item = QLCoverFlowItem(self.image(fileInfo.absoluteFilePath()).scaledToWidth(200, Qt.SmoothTransformation))
+            item.setTitle(fileInfo.absoluteFilePath())
+            item.setComment(str(fileInfo.size()/1024)+"K")
+            self.coverFlow.add(item)
     
     def image(self, path):
         im = QImage()

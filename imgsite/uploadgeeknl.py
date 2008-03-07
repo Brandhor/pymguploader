@@ -5,9 +5,9 @@ import mimetypes
 import re
 from BeautifulSoup import BeautifulSoup
 
-class Imagecross(QObject):
+class UploadgeekNl(QObject):
     def __init__(self, parent):
-        super(Imagecross, self).__init__(parent)
+        super(UploadgeekNl, self).__init__(parent)
         self.http = QHttp(parent)
         
         self.connect(self.http, SIGNAL("requestFinished(int, bool)"),
@@ -21,7 +21,7 @@ class Imagecross(QObject):
     
     def upload(self, path):
         self.html = QString()
-        url = QUrl("http://hosting03.imagecross.com/basic.php")
+        url = QUrl("http://www.uploadgeek.nl/upload.php")
         fp = QFile(path)
         fp.open(QIODevice.ReadOnly)
         
@@ -32,8 +32,8 @@ class Imagecross(QObject):
         if  not url.userName().isEmpty():
             self.http.setUser(url.userName(), url.password())
     
-        header = QHttpRequestHeader("POST",  "/basic.php",  1,  1)
-        header.setValue("Host", "hosting03.imagecross.com");
+        header = QHttpRequestHeader("POST",  "/upload.php",  1,  1)
+        header.setValue("Host", "www.uploadgeek.nl");
         header.setValue("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
         header.setValue("Keep-Alive", "300");
         header.setValue("Connection", "keep-alive");
@@ -44,7 +44,7 @@ class Imagecross(QObject):
         bytes = QByteArray()
         bytes.append("--AaB03x\r\n")
         bytes.append("Content-Disposition: ")
-        bytes.append("form-data; name=\"userfile\"; filename=\"" + QByteArray(QFileInfo(path).fileName().toUtf8()) + "\"\r\n")
+        bytes.append("form-data; name=\"userfile[]\"; filename=\"" + QByteArray(QFileInfo(path).fileName().toUtf8()) + "\"\r\n")
         bytes.append("Content-Type: %s\r\n"%mimetypes.guess_type(str(path))[0])
         bytes.append("\r\n")
         bytes.append(fp.readAll())
@@ -75,19 +75,19 @@ class Imagecross(QObject):
             return
     
         if error:
-            QMessageBox.information(self, self.tr("Imagecross"),
+            QMessageBox.information(self, self.tr("Uploadgeek.nl"),
                                           self.tr("Upload failed: %1.")
                                           .arg(self.http.errorString()))
         else:
             s = BeautifulSoup(self.html.toUtf8())
-            url = s.find("table").find("img").get("src")
-            code = re.search(r"image-hosting-(?P<char>.)/(?P<id>.*)", url)
-            code = "[URL=\"%s\"][IMG]http://hosting03.imagecross.com/image-hosting-thumbs-%s/%s[/IMG][/URL]"%(url, code.group(1), code.group(2))
+            url = s.find("table").find("input").get("value")
+            thumb = re.sub("\.(\w*)$", "_thumb.\\1", url)
+            code = "[URL=\"%s\"][IMG]%s[/IMG][/URL]"%(url, thumb)
             self.emit(SIGNAL("done(QString)"), str(code))
 
     def readResponseHeader(self, responseHeader):
         if responseHeader.statusCode() != 200:
-            QMessageBox.information(self, self.tr("Imagecross"),
+            QMessageBox.information(self, self.tr("Uploadgeek.nl"),
                                           self.tr("Upload failed: %1.")
                                           .arg(responseHeader.reasonPhrase()))
             self.httpRequestAborted = True
@@ -101,5 +101,5 @@ class Imagecross(QObject):
         self.parent().ui.pbPartial.setValue(done)
     
     def __str__(self):
-        return "Imagecross"
+        return "Uploadgeek.nl"
     
