@@ -10,7 +10,6 @@ if not hasattr(sys, "frozen"):
 import ui
 import imgsite
 import tempfile
-import postmarkup
 from watermark import *
 from ImageQt import ImageQt
 try:
