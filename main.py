@@ -12,6 +12,7 @@ import imgsite
 import tempfile
 from watermark import *
 from ImageQt import ImageQt
+from PIL import Image
 try:
     from QLCoverFlow import QLCoverFlow
     from QLCoverFlowItem import QLCoverFlowItem
@@ -46,31 +47,34 @@ class ImageUploader(QMainWindow):
         self.scanSite()
         self.loadSettings()
         
-        self.connect(self.ui.btnAdd,  SIGNAL("clicked()"), self.addClicked)
-        self.connect(self.ui.btnAddFolder,  SIGNAL("clicked()"),  self.addFolderClicked)
+        self.connect(self.ui.btnAdd, SIGNAL("clicked()"), self.addClicked)
+        self.connect(self.ui.btnAddFolder, SIGNAL("clicked()"),  self.addFolderClicked)
         self.connect(self.ui.btnCancel, SIGNAL("clicked()"), self.cancelUpload)
-        self.connect(self.ui.btnRemove,  SIGNAL("clicked()"), self.removeClicked)
-        self.connect(self.ui.btnUpload,  SIGNAL("clicked()"), self.uploadClicked)
-        self.connect(self.ui.btnDelete,  SIGNAL("clicked()"),  self.deleteImages)
+        self.connect(self.ui.btnRemove, SIGNAL("clicked()"), self.removeClicked)
+        self.connect(self.ui.btnUpload, SIGNAL("clicked()"), self.uploadClicked)
+        self.connect(self.ui.btnDelete, SIGNAL("clicked()"),  self.deleteImages)
         
         
         self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
         self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
         self.connect(self.ui.rbCustom, SIGNAL("toggled(bool)"), self.wmCustomToggled)
-        self.connect(self.ui.tabWidget_2,  SIGNAL("currentChanged(int)"), self.tabChanged)
-        self.connect(self.ui.rbUpperLeft,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
-        self.connect(self.ui.rbBottomLeft,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
-        self.connect(self.ui.rbUpperRight,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
-        self.connect(self.ui.rbBottomRight,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
-        self.connect(self.ui.rbScaled,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
-        self.connect(self.ui.rbTiled,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
-        self.connect(self.ui.rbCustom,  SIGNAL("clicked()"),  self.updateWatermarkPreview)
-        self.connect(self.ui.watermarkX,  SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
-        self.connect(self.ui.watermarkY,  SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
-        self.connect(self.ui.spinOpacity,  SIGNAL("valueChanged(double)"),  self.updateWatermarkPreview)
+        self.connect(self.ui.tabWidget_2, SIGNAL("currentChanged(int)"), self.tabChanged)
+        self.connect(self.ui.rbUpperLeft, SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbBottomLeft, SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbUpperRight, SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbBottomRight, SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbScaled, SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbTiled, SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.rbCustom, SIGNAL("clicked()"),  self.updateWatermarkPreview)
+        self.connect(self.ui.watermarkX, SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
+        self.connect(self.ui.watermarkY, SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
+        self.connect(self.ui.spinOpacity, SIGNAL("valueChanged(double)"),  self.updateWatermarkPreview)
         
-        self.connect(self.ui.spinImg,  SIGNAL("valueChanged(int)"),  self.updateList)
-        
+        self.connect(self.ui.spinImg, SIGNAL("valueChanged(int)"),  self.updateList)
+
+        self.connect(self.ui.comboFormat, SIGNAL("currentIndexChanged(int)"), self.formatChanged)
+
+    
     def toggleCoverFlow(self):
         if USE_COVERFLOW:
             if self.ui.btnCoverFlow.isChecked():
@@ -168,6 +172,18 @@ class ImageUploader(QMainWindow):
             self.wmCustomToggled(True)
             
         self.settings.endGroup()
+
+        self.settings.beginGroup("format")
+
+        if self.settings.contains("defaultformat"):
+            self.ui.comboFormat.setCurrentIndex(self.ui.comboFormat.findText(self.settings.value("defaultformat").toString()))
+
+        if self.ui.comboFormat.currentText() == "JPEG":
+            self.ui.spinQuality.setEnabled(True)
+
+        self.ui.spinQuality.setValue(self.settings.value("quality", QVariant(75)).toInt()[0])
+        
+        self.settings.endGroup()
         
     def closeEvent(self, event):
         self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
@@ -197,6 +213,14 @@ class ImageUploader(QMainWindow):
         elif self.ui.rbCustom.isChecked():
             position="custom"
         self.settings.setValue("position", QVariant(position))
+        self.settings.endGroup()
+
+        self.settings.beginGroup("format")
+
+        self.settings.setValue("defaultformat", QVariant(self.ui.comboFormat.currentText()))
+
+        self.settings.setValue("quality", QVariant(self.ui.spinQuality.value()))
+
         self.settings.endGroup()
         
         for root, dirs, files in os.walk(tempfile.tempdir, topdown=False):
@@ -278,6 +302,14 @@ class ImageUploader(QMainWindow):
             w = self.doWatermark(it)     
             it = os.path.join(tempfile.tempdir, str(QFileInfo(it).fileName()))
             w.save(it)
+
+        if self.ui.comboFormat.currentIndex() != 0:
+            i = Image.open(str(it))
+            d = str(QFileInfo(it).baseName())+"."+str(self.ui.comboFormat.currentText()).lower()
+            it = os.path.join(tempfile.tempdir, d)
+            i.save(it, str(self.ui.comboFormat.currentText()), quality=self.ui.spinQuality.value())
+            
+
         self.site[str(self.ui.comboSite.currentText())].upload(it)
 
     def updateList(self,  value=None):
@@ -363,7 +395,14 @@ class ImageUploader(QMainWindow):
         except:
             im = QImage(path)
         return im
-        
+
+    def formatChanged(self, value):
+        if self.ui.comboFormat.currentText() == "JPEG":
+            self.ui.spinQuality.setEnabled(True)
+        else:
+            self.ui.spinQuality.setEnabled(False)
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     mw = ImageUploader()
