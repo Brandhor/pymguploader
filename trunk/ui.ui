@@ -441,6 +441,49 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QLabel" name="label_3" >
+        <property name="text" >
+         <string>Image format</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboFormat" >
+        <item>
+         <property name="text" >
+          <string>Default</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>PNG</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>JPEG</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4" >
+        <property name="text" >
+         <string>Quality</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinQuality" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
+        <property name="maximum" >
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -506,7 +549,7 @@
      <x>0</x>
      <y>0</y>
      <width>748</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
