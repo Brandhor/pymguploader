@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>741</height>
+    <width>969</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="acceptDrops" >
@@ -16,10 +16,22 @@
    <string>Image Uploader</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="res.qrc" >:/new/prefix1/img/icon.png</iconset>
+   <iconset resource="res.qrc" >
+    <normaloff>:/new/prefix1/img/icon.png</normaloff>:/new/prefix1/img/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget" >
-   <layout class="QVBoxLayout" >
+   <property name="enabled" >
+    <bool>true</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>21</y>
+     <width>969</width>
+     <height>711</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout" >
     <item>
      <widget class="QTabWidget" name="tabWidget_2" >
       <property name="minimumSize" >
@@ -32,105 +44,48 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="tabImages" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>945</width>
+         <height>334</height>
+        </rect>
+       </property>
        <attribute name="title" >
         <string>Images</string>
        </attribute>
        <layout class="QGridLayout" >
         <item row="0" column="0" >
-         <widget class="QFrame" name="frame" >
-          <property name="frameShape" >
-           <enum>QFrame::StyledPanel</enum>
+         <widget class="QListWidget" name="imgList" >
+          <property name="minimumSize" >
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="frameShadow" >
-           <enum>QFrame::Raised</enum>
+          <property name="iconSize" >
+           <size>
+            <width>300</width>
+            <height>300</height>
+           </size>
           </property>
-          <layout class="QHBoxLayout" >
-           <item>
-            <widget class="QListWidget" name="imgList" >
-             <property name="iconSize" >
-              <size>
-               <width>150</width>
-               <height>150</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" >
-             <item>
-              <widget class="QPushButton" name="btnAdd" >
-               <property name="text" >
-                <string>Add</string>
-               </property>
-               <property name="icon" >
-                <iconset resource="res.qrc" >:/new/prefix1/img/add.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btnAddFolder" >
-               <property name="text" >
-                <string>Add Folder</string>
-               </property>
-               <property name="icon" >
-                <iconset resource="res.qrc" >:/new/prefix1/img/add-folder.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btnRemove" >
-               <property name="text" >
-                <string>Remove</string>
-               </property>
-               <property name="icon" >
-                <iconset resource="res.qrc" >:/new/prefix1/img/delete.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btnDelete" >
-               <property name="text" >
-                <string>Delete Images</string>
-               </property>
-               <property name="icon" >
-                <iconset resource="res.qrc" >:/new/prefix1/img/trash.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btnCoverFlow" >
-               <property name="text" >
-                <string>CoverFlow</string>
-               </property>
-               <property name="icon" >
-                <iconset resource="res.qrc" >:/new/prefix1/img/coverflow.png</iconset>
-               </property>
-               <property name="checkable" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer>
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" >
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-          </layout>
+          <property name="resizeMode" >
+           <enum>QListView::Adjust</enum>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tabWatermark" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>945</width>
+         <height>334</height>
+        </rect>
+       </property>
        <attribute name="title" >
         <string>Watermark</string>
        </attribute>
@@ -188,7 +143,7 @@
                <property name="orientation" >
                 <enum>Qt::Vertical</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>20</width>
                  <height>40</height>
@@ -201,7 +156,7 @@
                <property name="orientation" >
                 <enum>Qt::Horizontal</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>40</width>
                  <height>20</height>
@@ -231,7 +186,7 @@
                <property name="orientation" >
                 <enum>Qt::Vertical</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>20</width>
                  <height>40</height>
@@ -251,7 +206,7 @@
                <property name="orientation" >
                 <enum>Qt::Horizontal</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>40</width>
                  <height>20</height>
@@ -264,7 +219,7 @@
                <property name="orientation" >
                 <enum>Qt::Vertical</enum>
                </property>
-               <property name="sizeHint" >
+               <property name="sizeHint" stdset="0" >
                 <size>
                  <width>20</width>
                  <height>40</height>
@@ -350,7 +305,8 @@
              <string>Add Watermark</string>
             </property>
             <property name="icon" >
-             <iconset resource="res.qrc" >:/new/prefix1/img/add.png</iconset>
+             <iconset resource="res.qrc" >
+              <normaloff>:/new/prefix1/img/add.png</normaloff>:/new/prefix1/img/add.png</iconset>
             </property>
            </widget>
           </item>
@@ -360,7 +316,8 @@
              <string>Remove Watermark</string>
             </property>
             <property name="icon" >
-             <iconset resource="res.qrc" >:/new/prefix1/img/delete.png</iconset>
+             <iconset resource="res.qrc" >
+              <normaloff>:/new/prefix1/img/delete.png</normaloff>:/new/prefix1/img/delete.png</iconset>
             </property>
            </widget>
           </item>
@@ -394,124 +351,352 @@
     </item>
     <item>
      <widget class="QTabWidget" name="tabWidget" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize" >
+       <size>
+        <width>16777215</width>
+        <height>100</height>
+       </size>
+      </property>
       <property name="currentIndex" >
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>945</width>
+         <height>73</height>
+        </rect>
+       </property>
        <attribute name="title" >
         <string>BBCode</string>
        </attribute>
        <layout class="QHBoxLayout" >
         <item>
-         <widget class="QTextEdit" name="textBBCode" />
+         <widget class="QTextEdit" name="textBBCode" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" >
-      <item>
-       <widget class="QLabel" name="label_2" >
-        <property name="text" >
-         <string>Images per line</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spinImg" >
-        <property name="minimum" >
-         <number>1</number>
-        </property>
-        <property name="value" >
-         <number>4</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer>
-        <property name="orientation" >
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" >
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3" >
-        <property name="text" >
-         <string>Image format</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboFormat" >
-        <item>
-         <property name="text" >
-          <string>Default</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>PNG</string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>JPEG</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_4" >
-        <property name="text" >
-         <string>Quality</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spinQuality" >
-        <property name="enabled" >
-         <bool>false</bool>
-        </property>
-        <property name="maximum" >
-         <number>100</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" >
-      <item>
-       <widget class="QComboBox" name="comboSite" />
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnUpload" >
-        <property name="text" >
-         <string>Upload</string>
-        </property>
-        <property name="icon" >
-         <iconset resource="res.qrc" >:/new/prefix1/img/upload.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnCancel" >
-        <property name="text" >
-         <string>Cancel</string>
-        </property>
-        <property name="icon" >
-         <iconset resource="res.qrc" >:/new/prefix1/img/cancel.png</iconset>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QWidget" native="1" name="widget" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout" >
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7" >
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6" >
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_5" >
+             <item>
+              <layout class="QFormLayout" name="formLayout" >
+               <property name="fieldGrowthPolicy" >
+                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+               </property>
+               <item row="0" column="0" >
+                <widget class="QLabel" name="label_2" >
+                 <property name="text" >
+                  <string>Images per line</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" >
+                <widget class="QLabel" name="label_3" >
+                 <property name="text" >
+                  <string>Image format</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1" >
+                <widget class="QComboBox" name="comboFormat" >
+                 <item>
+                  <property name="text" >
+                   <string>Default</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text" >
+                   <string>PNG</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text" >
+                   <string>JPEG</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="2" column="0" >
+                <widget class="QLabel" name="label_4" >
+                 <property name="text" >
+                  <string>Quality</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1" >
+                <widget class="QSpinBox" name="spinQuality" >
+                 <property name="enabled" >
+                  <bool>false</bool>
+                 </property>
+                 <property name="maximum" >
+                  <number>100</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1" >
+                <widget class="QSpinBox" name="spinImg" >
+                 <property name="minimum" >
+                  <number>1</number>
+                 </property>
+                 <property name="value" >
+                  <number>4</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboSite" />
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnAdd" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Add</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/add.png</normaloff>:/new/prefix1/img/add.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnAddFolder" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Add Folder</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/add-folder.png</normaloff>:/new/prefix1/img/add-folder.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnRemove" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Remove</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/delete.png</normaloff>:/new/prefix1/img/delete.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnDelete" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Delete Images</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/trash.png</normaloff>:/new/prefix1/img/trash.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnDisplayMode" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Display Mode</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/coverflow.png</normaloff>:/new/prefix1/img/coverflow.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="checkable" >
+              <bool>false</bool>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnUpload" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Upload</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/upload.png</normaloff>:/new/prefix1/img/upload.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCancel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Cancel</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/cancel.png</normaloff>:/new/prefix1/img/cancel.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCopy" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Copy BBCode</string>
+             </property>
+             <property name="icon" >
+              <iconset resource="res.qrc" >
+               <normaloff>:/new/prefix1/img/copy.png</normaloff>:/new/prefix1/img/copy.png</iconset>
+             </property>
+             <property name="iconSize" >
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="flat" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
      <widget class="QLabel" name="lblTotal" >
@@ -548,12 +733,21 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>748</width>
+     <width>969</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>732</y>
+     <width>969</width>
+     <height>19</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="res.qrc" />

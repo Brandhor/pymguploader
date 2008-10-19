@@ -19,21 +19,25 @@ try:
     USE_COVERFLOW = True
 except:
     USE_COVERFLOW = False
+app = None
+
+display_modes = ["list", "icon", "coverflow"]
 
 class ImageUploader(QMainWindow):
     def __init__(self,  parent=None):
         super(ImageUploader, self).__init__(parent)
         self.ui = ui.Ui_MainWindow()
         self.ui.setupUi(self)
+        self.displayIndex = 0
         if USE_COVERFLOW:
-            self.coverFlow = QLCoverFlow()
+            self.coverFlow = QLCoverFlow(self.ui.tabImages)
+            #print dir(self.coverFlow)
             self.coverFlow.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.coverFlow.setFocusPolicy(Qt.ClickFocus)
             self.coverFlow.hide()
-            self.ui.hboxlayout.insertWidget(0, self.coverFlow)
-            self.connect(self.ui.btnCoverFlow,  SIGNAL("clicked()"),  self.toggleCoverFlow)
-        else:
-            self.ui.btnCoverFlow.hide()
+            self.ui.gridlayout.addWidget(self.coverFlow, 0, 0, 1, 1)
+            #self.ui.hboxlayout.insertWidget(0, self.coverFlow)
+            self.connect(self.ui.btnDisplayMode,  SIGNAL("clicked()"),  self.changeDisplayMode)
         
         reg = QRegExp("\\d*%")
         val = QRegExpValidator(reg, self)
@@ -53,6 +57,7 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.btnRemove, SIGNAL("clicked()"), self.removeClicked)
         self.connect(self.ui.btnUpload, SIGNAL("clicked()"), self.uploadClicked)
         self.connect(self.ui.btnDelete, SIGNAL("clicked()"),  self.deleteImages)
+        self.connect(self.ui.btnCopy, SIGNAL("clicked()"),  self.copyBB)
         
         
         self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
@@ -74,15 +79,34 @@ class ImageUploader(QMainWindow):
 
         self.connect(self.ui.comboFormat, SIGNAL("currentIndexChanged(int)"), self.formatChanged)
 
-    
-    def toggleCoverFlow(self):
-        if USE_COVERFLOW:
-            if self.ui.btnCoverFlow.isChecked():
+
+    def copyBB(self):
+        app.clipboard().setText(self.ui.textBBCode.toPlainText())
+
+    def changeDisplayMode(self, n=-1):
+        if n == -1:
+            s = len(display_modes)
+            n = self.displayIndex+1
+            if n >= s:
+                n = 0
+
+        if display_modes[n] == "coverflow":
+            if USE_COVERFLOW:
                 self.coverFlow.show()
                 self.ui.imgList.hide()
+                self.setCoverFlowSize()
             else:
-                self.coverFlow.hide()
-                self.ui.imgList.show()
+                n = 0
+        if display_modes[n] == "list":
+            self.coverFlow.hide()
+            self.ui.imgList.show()
+            self.ui.imgList.setViewMode(QListView.ListMode)
+        elif display_modes[n] == "icon":
+            self.coverFlow.hide()
+            self.ui.imgList.show()
+            self.ui.imgList.setViewMode(QListView.IconMode)
+
+        self.displayIndex = n
     
     def tabChanged(self, index):
         if index == 1: #watermark tab
@@ -118,7 +142,16 @@ class ImageUploader(QMainWindow):
     def resizeEvent(self, event):
         if self.ui.tabWidget_2.currentIndex() == 1: #watermark tab
             self.updateWatermarkPreview()
-    
+        elif USE_COVERFLOW:
+            self.setCoverFlowSize()
+
+    def showEvent(self, event):
+        if USE_COVERFLOW:
+            self.setCoverFlowSize()
+
+    def setCoverFlowSize(self):
+        self.coverFlow.setSlideSize(QSize(self.coverFlow.height(), self.coverFlow.height()))
+
     def dragEnterEvent(self, event):
         event.acceptProposedAction()
     
@@ -144,9 +177,7 @@ class ImageUploader(QMainWindow):
         
         self.lastDir = self.settings.value("lastDir").toString()
         self.ui.spinImg.setValue(self.settings.value("numImg", QVariant(4)).toInt()[0])
-        if USE_COVERFLOW:
-            self.ui.btnCoverFlow.setChecked(self.settings.value("coverFlow", QVariant(False)).toBool())
-            self.toggleCoverFlow()
+        self.changeDisplayMode(self.settings.value("displayMode", QVariant(0)).toInt()[0])
         
         self.settings.beginGroup("watermark")
         self.watermark = self.settings.value("file").toString()
@@ -189,8 +220,7 @@ class ImageUploader(QMainWindow):
         self.settings.setValue("defaultsite", QVariant(self.ui.comboSite.currentText()))
         self.settings.setValue("lastDir", QVariant(self.lastDir))
         self.settings.setValue("numImg", QVariant(self.ui.spinImg.value()))
-        if USE_COVERFLOW:
-            self.settings.setValue("coverFlow", QVariant(self.ui.btnCoverFlow.isChecked()))
+        self.settings.setValue("displayMode", QVariant(self.displayIndex))
         
         self.settings.beginGroup("watermark")
         self.settings.setValue("file", QVariant(self.watermark))
@@ -262,7 +292,7 @@ class ImageUploader(QMainWindow):
             self.lastDir = QFileInfo(l).absolutePath()
         
     def removeClicked(self):
-        if self.ui.btnCoverFlow.isChecked():
+        if display_modes[self.displayIndex] == "coverflow":
             cfi = self.coverFlow.at(self.coverFlow.selected())
             lIt = self.ui.imgList.findItems(cfi.title(), Qt.MatchExactly)
             if len(lIt):
@@ -383,7 +413,7 @@ class ImageUploader(QMainWindow):
         
     def addCoverFlowItem(self, fileInfo):
         if USE_COVERFLOW:
-            item = QLCoverFlowItem(self.image(fileInfo.absoluteFilePath()).scaledToWidth(200, Qt.SmoothTransformation))
+            item = QLCoverFlowItem(self.image(fileInfo.absoluteFilePath()))#.scaledToWidth(200, Qt.SmoothTransformation))
             item.setTitle(fileInfo.absoluteFilePath())
             item.setComment(str(fileInfo.size()/1024)+"K")
             self.coverFlow.add(item)
