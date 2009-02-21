@@ -98,11 +98,13 @@ class ImageUploader(QMainWindow):
             else:
                 n = 0
         if display_modes[n] == "list":
-            self.coverFlow.hide()
+            if USE_COVERFLOW:
+                self.coverFlow.hide()
             self.ui.imgList.show()
             self.ui.imgList.setViewMode(QListView.ListMode)
         elif display_modes[n] == "icon":
-            self.coverFlow.hide()
+            if USE_COVERFLOW:
+                self.coverFlow.hide()
             self.ui.imgList.show()
             self.ui.imgList.setViewMode(QListView.IconMode)
 
