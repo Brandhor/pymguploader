@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4.Qt import *
@@ -37,8 +38,7 @@ class ImageUploader(QMainWindow):
             self.coverFlow.hide()
             self.ui.gridlayout.addWidget(self.coverFlow, 0, 0, 1, 1)
             #self.ui.hboxlayout.insertWidget(0, self.coverFlow)
-            self.connect(self.ui.btnDisplayMode,  SIGNAL("clicked()"),  self.changeDisplayMode)
-        
+
         reg = QRegExp("\\d*%")
         val = QRegExpValidator(reg, self)
         self.ui.watermarkX.setValidator(val)
@@ -50,7 +50,7 @@ class ImageUploader(QMainWindow):
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, "Pymguploader")
         self.scanSite()
         self.loadSettings()
-        
+
         self.connect(self.ui.btnAdd, SIGNAL("clicked()"), self.addClicked)
         self.connect(self.ui.btnAddFolder, SIGNAL("clicked()"),  self.addFolderClicked)
         self.connect(self.ui.btnCancel, SIGNAL("clicked()"), self.cancelUpload)
@@ -58,8 +58,8 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.btnUpload, SIGNAL("clicked()"), self.uploadClicked)
         self.connect(self.ui.btnDelete, SIGNAL("clicked()"),  self.deleteImages)
         self.connect(self.ui.btnCopy, SIGNAL("clicked()"),  self.copyBB)
-        
-        
+        self.connect(self.ui.btnDisplayMode,  SIGNAL("clicked()"),  self.changeDisplayMode)
+
         self.connect(self.ui.pbAddWatermark, SIGNAL("clicked()"), self.addWatermark)
         self.connect(self.ui.pbRemoveWatermark, SIGNAL("clicked()"), self.removeWatermark)
         self.connect(self.ui.rbCustom, SIGNAL("toggled(bool)"), self.wmCustomToggled)
@@ -74,7 +74,7 @@ class ImageUploader(QMainWindow):
         self.connect(self.ui.watermarkX, SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
         self.connect(self.ui.watermarkY, SIGNAL("textChanged(QString)"),  self.updateWatermarkPreview)
         self.connect(self.ui.spinOpacity, SIGNAL("valueChanged(double)"),  self.updateWatermarkPreview)
-        
+
         self.connect(self.ui.spinImg, SIGNAL("valueChanged(int)"),  self.updateList)
 
         self.connect(self.ui.comboFormat, SIGNAL("currentIndexChanged(int)"), self.formatChanged)
@@ -109,7 +109,7 @@ class ImageUploader(QMainWindow):
             self.ui.imgList.setViewMode(QListView.IconMode)
 
         self.displayIndex = n
-    
+
     def tabChanged(self, index):
         if index == 1: #watermark tab
             self.updateWatermarkPreview()
