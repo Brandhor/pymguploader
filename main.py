@@ -11,6 +11,7 @@ if not hasattr(sys, "frozen"):
 import ui
 import imgsite
 import tempfile
+import traceback
 from watermark import *
 from ImageQt import ImageQt
 from PIL import Image
@@ -23,6 +24,14 @@ except:
 app = None
 
 display_modes = ["list", "icon", "coverflow"]
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    filename, line, dummy, dummy = traceback.extract_tb(exc_traceback).pop()
+    filename = os.path.basename(filename)
+    error = "%s: %s" % (str(exc_type).split(".")[-1], exc_value)
+
+    QMessageBox.critical(None, "ERROR", "<b>%s</b> " % error + "on line %d, file %s" % (line, filename))
+
 
 class ImageUploader(QMainWindow):
     def __init__(self,  parent=None):
@@ -323,10 +332,10 @@ class ImageUploader(QMainWindow):
         if code:
             self.codeList += [str(code)]
             self.updateList()
-                
+
         if not len(self.uploadList):
             return
-        
+
         self.ui.pbTotal.setValue(self.ui.pbTotal.value()+1)
         self.ui.lblTotal.setText("Uploading %d of %d"%(self.ui.pbTotal.value(),  self.ui.pbTotal.maximum()))
         it = self.uploadList.pop(0)
@@ -340,7 +349,7 @@ class ImageUploader(QMainWindow):
             d = str(QFileInfo(it).baseName())+"."+str(self.ui.comboFormat.currentText()).lower()
             it = os.path.join(tempfile.tempdir, d)
             i.save(it, str(self.ui.comboFormat.currentText()), quality=self.ui.spinQuality.value())
-            
+
 
         self.site[str(self.ui.comboSite.currentText())].upload(it)
 
@@ -354,7 +363,7 @@ class ImageUploader(QMainWindow):
                 i = 0
             else:
                 i += 1
-        
+
     def addWatermark(self):
         if not self.watermark:
             last = self.lastDir
@@ -437,6 +446,7 @@ class ImageUploader(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    sys.excepthook=handle_exception
     mw = ImageUploader()
     mw.show()
     sys.exit(app.exec_())
