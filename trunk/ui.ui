@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>969</width>
-    <height>751</height>
+    <width>795</width>
+    <height>677</height>
    </rect>
   </property>
   <property name="acceptDrops" >
@@ -23,14 +23,6 @@
    <property name="enabled" >
     <bool>true</bool>
    </property>
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>21</y>
-     <width>969</width>
-     <height>711</height>
-    </rect>
-   </property>
    <layout class="QVBoxLayout" name="verticalLayout" >
     <item>
      <widget class="QTabWidget" name="tabWidget_2" >
@@ -44,14 +36,6 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="tabImages" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>945</width>
-         <height>334</height>
-        </rect>
-       </property>
        <attribute name="title" >
         <string>Images</string>
        </attribute>
@@ -78,14 +62,6 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tabWatermark" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>945</width>
-         <height>334</height>
-        </rect>
-       </property>
        <attribute name="title" >
         <string>Watermark</string>
        </attribute>
@@ -367,14 +343,6 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>945</width>
-         <height>73</height>
-        </rect>
-       </property>
        <attribute name="title" >
         <string>BBCode</string>
        </attribute>
@@ -386,6 +354,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="readOnly" >
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -481,215 +452,219 @@
             </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="btnAdd" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Add</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/add.png</normaloff>:/new/prefix1/img/add.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnAddFolder" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Add Folder</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/add-folder.png</normaloff>:/new/prefix1/img/add-folder.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnRemove" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Remove</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/delete.png</normaloff>:/new/prefix1/img/delete.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnDelete" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Delete Images</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/trash.png</normaloff>:/new/prefix1/img/trash.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnDisplayMode" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Display Mode</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/coverflow.png</normaloff>:/new/prefix1/img/coverflow.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable" >
-              <bool>false</bool>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnUpload" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Upload</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/upload.png</normaloff>:/new/prefix1/img/upload.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnCancel" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Cancel</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/cancel.png</normaloff>:/new/prefix1/img/cancel.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnCopy" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>Copy BBCode</string>
-             </property>
-             <property name="icon" >
-              <iconset resource="res.qrc" >
-               <normaloff>:/new/prefix1/img/copy.png</normaloff>:/new/prefix1/img/copy.png</iconset>
-             </property>
-             <property name="iconSize" >
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="flat" >
-              <bool>true</bool>
-             </property>
-            </widget>
+            <layout class="QGridLayout" name="gridLayout_2" >
+             <item row="0" column="0" >
+              <widget class="QPushButton" name="btnAdd" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Add</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/add.png</normaloff>:/new/prefix1/img/add.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" >
+              <widget class="QPushButton" name="btnAddFolder" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Add Folder</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/add-folder.png</normaloff>:/new/prefix1/img/add-folder.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2" >
+              <widget class="QPushButton" name="btnRemove" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Remove</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/delete.png</normaloff>:/new/prefix1/img/delete.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3" >
+              <widget class="QPushButton" name="btnDelete" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Delete Images</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/trash.png</normaloff>:/new/prefix1/img/trash.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" >
+              <widget class="QPushButton" name="btnDisplayMode" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Display Mode</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/coverflow.png</normaloff>:/new/prefix1/img/coverflow.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="checkable" >
+                <bool>false</bool>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" >
+              <widget class="QPushButton" name="btnUpload" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Upload</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/upload.png</normaloff>:/new/prefix1/img/upload.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2" >
+              <widget class="QPushButton" name="btnCancel" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Cancel</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/cancel.png</normaloff>:/new/prefix1/img/cancel.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3" >
+              <widget class="QPushButton" name="btnCopy" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string> Copy BBCode</string>
+               </property>
+               <property name="icon" >
+                <iconset resource="res.qrc" >
+                 <normaloff>:/new/prefix1/img/copy.png</normaloff>:/new/prefix1/img/copy.png</iconset>
+               </property>
+               <property name="iconSize" >
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="flat" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>
@@ -733,21 +708,12 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>969</width>
-     <height>21</height>
+     <width>795</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>732</y>
-     <width>969</width>
-     <height>19</height>
-    </rect>
-   </property>
-  </widget>
+  <widget class="QStatusBar" name="statusbar" />
  </widget>
  <resources>
   <include location="res.qrc" />
