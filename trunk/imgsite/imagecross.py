@@ -5,6 +5,7 @@ from PyQt4.QtNetwork import *
 import mimetypes
 import re
 from BeautifulSoup import BeautifulSoup
+import urllib2
 
 class Imagecross(QObject):
     def __init__(self, parent):
@@ -20,21 +21,25 @@ class Imagecross(QObject):
         self.connect(self.http, SIGNAL("readyRead(QHttpResponseHeader)"), 
                      self.readHttp)
 
+        u = urllib2.urlopen("http://www.imagecross.com")
+        r = u.read()
+        s = BeautifulSoup(r)
+        self.url = QUrl(s.find("form", {"name":"uploadform"}).get("action"))
+
     def upload(self, path):
         self.html = ""
-        url = QUrl("http://hosting03.imagecross.com/basicg.php")
         fp = QFile(path)
         fp.open(QIODevice.ReadOnly)
 
-        if url.port() != -1:
-            self.http.setHost(url.host(), url.port())
+        if self.url.port() != -1:
+            self.http.setHost(self.url.host(), self.url.port())
         else:
-            self.http.setHost(url.host(), 80)
-        if  not url.userName().isEmpty():
-            self.http.setUser(url.userName(), url.password())
+            self.http.setHost(self.url.host(), 80)
+        if  not self.url.userName().isEmpty():
+            self.http.setUser(self.url.userName(), self.url.password())
 
         header = QHttpRequestHeader("POST",  "/basicg.php",  1,  1)
-        header.setValue("Host", "hosting03.imagecross.com");
+        header.setValue("Host", self.url.host());
         header.setValue("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
         header.setValue("Keep-Alive", "300");
         header.setValue("Connection", "keep-alive");
