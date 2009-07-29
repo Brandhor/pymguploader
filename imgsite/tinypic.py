@@ -31,10 +31,10 @@ class Tinypic(QObject):
         upk = s.find("input", {"name":"upk"}).get("value")
         lang = s.find("input", {"name":"domain_lang"}).get("value")
         maxs = s.find("input", {"name":"MAX_FILE_SIZE"}).get("value")
+        n = s.find("form", {"name":"uploadForm"}).get("action")
 
         self.html = QString()
-        n = random.randint(1, 4)
-        url = QUrl("http://s%s.tinypic.com/upload.php"%n)
+        url = QUrl(n)
         fp = QFile(path)
         fp.open(QIODevice.ReadOnly)
         
@@ -46,7 +46,7 @@ class Tinypic(QObject):
             self.http.setUser(url.userName(), url.password())
     
         header = QHttpRequestHeader("POST",  "/upload.php",  1,  1)
-        header.setValue("Host", "s%s.tinypic.com"%n)
+        header.setValue("Host", url.host())
         header.setValue("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3")
         header.setValue("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
         header.setValue("Keep-Alive", "300");
