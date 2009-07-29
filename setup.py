@@ -14,7 +14,7 @@ if sys.platform == 'win32':
 
     setup(
         name='imguploader',
-        windows=[{'script':'main.py' ,  'icon_resources': [(1, "img/icon.ico")]}],
+        windows=[{'script':'main.py' ,  'icon_resources': [(1, "img/icon.ico")], "dest_base":"imguploader"}],
         options = { "py2exe" :
                             {"includes" : ["sip", "PictureFlow"],
                             "dist_dir" : "dist",
