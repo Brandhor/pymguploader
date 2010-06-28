@@ -26,11 +26,12 @@ app = None
 display_modes = ["list", "icon", "coverflow"]
 
 def handle_exception(exc_type, exc_value, exc_traceback):
-    filename, line, dummy, dummy = traceback.extract_tb(exc_traceback).pop()
-    filename = os.path.basename(filename)
-    error = "%s: %s" % (str(exc_type).split(".")[-1], exc_value)
+    #filename, line, dummy, dummy = traceback.extract_tb(exc_traceback).pop()
+    #filename = os.path.basename(filename)
+    #error = "%s: %s" % (str(exc_type).split(".")[-1], exc_value)
+    error = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback)).replace("\n", "<br>")
 
-    QMessageBox.critical(None, "ERROR", "<b>%s</b> " % error + "on line %d, file %s" % (line, filename))
+    QMessageBox.critical(None, "ERROR", "<b>%s</b> " % error )
 
 
 class ImageUploader(QMainWindow):
@@ -332,12 +333,13 @@ class ImageUploader(QMainWindow):
         if code:
             self.codeList += [str(code)]
             self.updateList()
+            self.ui.pbTotal.setValue(self.ui.pbTotal.value()+1)
 
         if not len(self.uploadList):
+            QMessageBox.information(self, "Upload finished", "All images have been uploaded")
             return
 
-        self.ui.pbTotal.setValue(self.ui.pbTotal.value()+1)
-        self.ui.lblTotal.setText("Uploading %d of %d"%(self.ui.pbTotal.value(),  self.ui.pbTotal.maximum()))
+        self.ui.lblTotal.setText("Uploading %d of %d"%(self.ui.pbTotal.value()+1,  self.ui.pbTotal.maximum()))
         it = self.uploadList.pop(0)
         if self.watermark:
             w = self.doWatermark(it)     

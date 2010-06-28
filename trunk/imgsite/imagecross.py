@@ -38,14 +38,19 @@ class Imagecross(QObject):
         if  not self.url.userName().isEmpty():
             self.http.setUser(self.url.userName(), self.url.password())
 
+        print self.url
         header = QHttpRequestHeader("POST",  "/basicg.php",  1,  1)
         header.setValue("Host", self.url.host());
+        header.setValue("User-Agent" ,"Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6 GTB5");
         header.setValue("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
         header.setValue("Keep-Alive", "300");
         header.setValue("Connection", "keep-alive");
+        header.setValue("Referer", "http://www.imagecross.com/private.php")
+
         header.setValue("Content-type", "multipart/form-data; boundary=AaB03x");
 
         bytes = QByteArray()
+
         bytes.append("--AaB03x\r\n")
         bytes.append("Content-Disposition: ")
         bytes.append("form-data; name=\"userfile\"; filename=\"" + QByteArray(QFileInfo(path).fileName().toUtf8()) + "\"\r\n")
@@ -53,6 +58,13 @@ class Imagecross(QObject):
         bytes.append("\r\n")
         bytes.append(fp.readAll())
         fp.close()
+        
+        bytes.append("--AaB03x\r\n")
+        bytes.append("Content-Disposition: ")
+        bytes.append("form-data; name=\"upload\"\r\n")
+        bytes.append("\r\n")
+        bytes.append("Uploading...\r\n")
+        
         bytes.append("\r\n")
         bytes.append("--AaB03x--")
         contentLength = bytes.length()
@@ -81,6 +93,9 @@ class Imagecross(QObject):
                                           self.tr("Upload failed: %1.")
                                           .arg(self.http.errorString()))
         else:
+            f = open("cross.html", "w")
+            f.write(str(self.html))
+            f.close()
             self.html = str(self.html).replace("</h6<", "</h6>")
             s = BeautifulSoup(self.html)
             s = BeautifulSoup(s.find("table").find("input").get("value"))
@@ -90,9 +105,9 @@ class Imagecross(QObject):
 
     def readResponseHeader(self, responseHeader):
         if responseHeader.statusCode() != 200:
-            QMessageBox.information(self, self.tr("Imagecross"),
-                                          self.tr("Upload failed: %1.")
-                                          .arg(responseHeader.reasonPhrase()))
+            print responseHeader.statusCode()
+            QMessageBox.information(None, "Imagecross",
+                                          "Upload failed: %s."%responseHeader.reasonPhrase())
             self.httpRequestAborted = True
             self.http.abort()
             return

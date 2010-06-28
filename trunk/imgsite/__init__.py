@@ -1,7 +1,14 @@
-from imagecross import Imagecross
+#doesn't work
+#from imagecross import Imagecross
 from imageshack import Imageshack
 from uploadgeekcom import UploadgeekCom
 from uploadgeeknl import UploadgeekNl
-from tinypic import Tinypic
+#captcha
+#from tinypic import Tinypic
 from imagebam import Imagebam
-from pict import Pict
+#not working anymore requires auth now
+#from pict import Pict
+from turboimagehost import Turboimagehost
+from postimage import Postimage
+from upmyphoto import Upmyphoto
+from freeimagehosting import Freeimagehosting

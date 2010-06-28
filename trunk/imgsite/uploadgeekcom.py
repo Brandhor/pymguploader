@@ -4,21 +4,17 @@ from PyQt4.QtGui import *
 from PyQt4.QtNetwork import *
 import mimetypes
 import re
+import urllib2
 from BeautifulSoup import BeautifulSoup
 
 class UploadgeekCom(QObject):
     def __init__(self, parent):
         super(UploadgeekCom, self).__init__(parent)
-        self.http = QHttp(parent)
-
-        self.connect(self.http, SIGNAL("requestFinished(int, bool)"),
+        self.nm = QNetworkAccessManager(parent)
+        self.rep = None
+        
+        self.connect(self.nm, SIGNAL("finished(QNetworkReply*)"),
                      self.httpRequestFinished)
-        self.connect(self.http, SIGNAL("dataSendProgress(int, int)"),
-                     self.updateDataSendProgress)
-        self.connect(self.http, SIGNAL("responseHeaderReceived(QHttpResponseHeader)"),
-                     self.readResponseHeader)
-        self.connect(self.http, SIGNAL("readyRead(QHttpResponseHeader)"), 
-                     self.readHttp)
 
     def upload(self, path):
         self.html = ""
@@ -26,23 +22,17 @@ class UploadgeekCom(QObject):
         fp = QFile(path)
         fp.open(QIODevice.ReadOnly)
 
-        if url.port() != -1:
-            self.http.setHost(url.host(), url.port())
-        else:
-            self.http.setHost(url.host(), 80)
-        if not url.userName().isEmpty():
-            self.http.setUser(url.userName(), url.password())
+        req = QNetworkRequest(url)
 
-        header = QHttpRequestHeader("POST",  "/upload.php",  1,  1)
-        header.setValue("Host", "www.uploadgeek.com");
-        header.setValue("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3")
-        header.setValue("Accept","text/xml,application/xhtml+xml,application/xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
-        header.setValue("Accept-Language", "en-us,en;q=0.5")
-        header.setValue("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7")
-        header.setValue("Keep-Alive", "300");
-        header.setValue("Connection", "keep-alive");
-        header.setValue("Referer", "http://www.uploadgeek.com/")
-        header.setValue("Content-type", "multipart/form-data; boundary=gc0p4Jq0M2Yt08jU534c0p");
+        req.setRawHeader("Host", "www.uploadgeek.com");
+        req.setRawHeader("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3")
+        req.setRawHeader("Accept","text/xml,application/xhtml+xml,application/xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
+        req.setRawHeader("Accept-Language", "en-us,en;q=0.5")
+        req.setRawHeader("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7")
+        req.setRawHeader("Keep-Alive", "300");
+        req.setRawHeader("Connection", "keep-alive");
+        req.setRawHeader("Referer", "http://www.uploadgeek.com/")
+        req.setRawHeader("Content-type", "multipart/form-data; boundary=gc0p4Jq0M2Yt08jU534c0p");
 
         bytes = QByteArray()
 
@@ -62,58 +52,47 @@ class UploadgeekCom(QObject):
         bytes.append("\r\n")
         bytes.append("--gc0p4Jq0M2Yt08jU534c0p--")
         contentLength = bytes.length()
-        header.setContentLength(contentLength)
+        req.setRawHeader("Content-Length", "%s" % contentLength)
+    
+        self.rep = self.nm.post(req, bytes)
+        
+        self.connect(self.rep, SIGNAL("uploadProgress(qint64, qint64)"),
+                     self.updateDataSendProgress)
+        self.connect(self.rep, SIGNAL("readyRead()"),
+                     self.readHttp)
+        self.connect(self.rep, SIGNAL("error(QNetworkReply::NetworkError)"),
+                     self.error)
 
         self.httpRequestAborted = False
-        self.httpGetId = self.http.request(header, bytes)
         self.parent().ui.lblPartial.setText("Uploading %s."%path)
 
-    def readHttp(self,  responseHeader):
-        self.html += self.http.readAll()
+    def error(self, code):
+        QMessageBox.error(None, self.__str__(),
+                                          "Upload failed: %s." % self.rep.errorString())
+    def readHttp(self):
+        self.html += self.rep.readAll()
 
     def cancelUpload(self):
         self.httpRequestAborted = True
-        self.http.abort()
+        self.rep.abort()
 
-    def httpRequestFinished(self, requestId, error):
+    def httpRequestFinished(self, reply):
         if self.httpRequestAborted:
             return
 
-        if requestId != self.httpGetId:
-            return
+        s = BeautifulSoup(str(self.html))
 
-        if error:
-            QMessageBox.information(self.parent(), self.tr("Uploadgeek.com"),
-                                          self.tr("Upload failed: %1.")
-                                          .arg(self.http.errorString()))
-        else:
-            s = BeautifulSoup(str(self.html))
-
-            c = None
-            try:
-                c = s.find("meta", {"http-equiv":"refresh"}).get("content")
-            except:
-                pass
-
-            if c:
-                url = re.search("URL=http://www.uploadgeek.com(.*)", c).group(1)
-                self.html = ""
-                self.httpGetId = self.http.get(url)
-            else:
-                code = s.find("input", {"class":"code_box"}).get("value")
-                self.emit(SIGNAL("done(QString)"), code)
-
-    def readResponseHeader(self, responseHeader):
-        if responseHeader.statusCode() == 302:
-            self.httpRequestAborted = False
-            self.httpGetId = self.http.get(responseHeader.value("Location"))
-        elif responseHeader.statusCode() != 200:
-            QMessageBox.information(self.parent(), self.tr("Uploadgeek.com"),
-                                          self.tr("Upload failed: %1.")
-                                          .arg(responseHeader.reasonPhrase()))
-            self.httpRequestAborted = True
-            self.http.abort()
-            return
+        
+        c = s.find("meta", {"http-equiv":"refresh"}).get("content")
+        
+        url = re.search("URL=http://www.uploadgeek.com(.*)", c).group(1)
+        u = urllib2.urlopen("http://www.uploadgeek.com"+url)
+        r = u.read()
+        u.close()
+        
+        s = BeautifulSoup(r)
+        code = s.find("input", {"class":"code_box"}).get("value")
+        self.emit(SIGNAL("done(QString)"), code)
 
     def updateDataSendProgress(self, done, total):
         if self.httpRequestAborted:
