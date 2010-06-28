@@ -20,13 +20,24 @@ class Pict(QObject):
         request = QNetworkRequest(url)
         fp = QFile(path)
         fp.open(QIODevice.ReadOnly)
-
-        request.setRawHeader("Host", "www.pict.com")
-        request.setRawHeader("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5")
-        request.setRawHeader("Keep-Alive", "300")
-        request.setRawHeader("Connection", "keep-alive")
-        request.setRawHeader("Content-type", "multipart/form-data; boundary=AaB03x")
-
+        
+        if url.port() != -1:
+            self.http.setHost(url.host(), url.port())
+        else:
+            self.http.setHost(url.host(), 80)
+        if  not url.userName().isEmpty():
+            self.http.setUser(url.userName(), url.password())
+    
+        header = QHttpRequestHeader("POST",  "/api/upload/",  1,  1)
+        header.setValue("Host", "www.pict.com");
+        header.setValue("User-Agent" ,"Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6 GTB5");
+        header.setValue("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
+        header.setValue("Keep-Alive", "300");
+        header.setValue("Connection", "keep-alive");
+        header.setValue("Content-type", "multipart/form-data; boundary=AaB03x");
+        
+        
+        
         bytes = QByteArray()
         bytes.append("--AaB03x\r\n")
         bytes.append("Content-Disposition: ")
@@ -56,9 +67,19 @@ class Pict(QObject):
         self.httpRequestAborted = True
         self.reply.abort()
 
-    def error(self, err):
-        QMessageBox.information(self, self.tr("Pict.com"), self.tr("Upload failed: %1.").arg(self.reply.errorString()))
-        self.reply.deleteLater()
+        if requestId != self.httpGetId:
+            return
+    
+        if error:
+            QMessageBox.information(self, self.tr("Pict.com"),
+                                          self.tr("Upload failed: %1.")
+                                          .arg(self.http.errorString()))
+        else:
+            s = BeautifulSoup(str(self.html))
+            url = s.find("copy", type="original").find("link", type="directLink").next.next
+            thumb = re.sub("/(?!.*/.*)", "/300/", url)
+            code = "[URL=\"%s\"][IMG]%s[/IMG][/URL]"%(url, thumb)
+            self.emit(SIGNAL("done(QString)"), str(code))
 
     def httpRequestFinished(self, reply):
         if self.httpRequestAborted:
