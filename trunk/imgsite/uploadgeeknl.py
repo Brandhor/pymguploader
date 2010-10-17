@@ -1,20 +1,7 @@
 # -*- coding: utf-8 -*-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtNetwork import *
-import mimetypes
-import re
-from BeautifulSoup import BeautifulSoup
+from base import *
 
-class UploadgeekNl(QObject):
-    def __init__(self, parent):
-        super(UploadgeekNl, self).__init__(parent)
-        self.nm = QNetworkAccessManager(parent)
-        self.rep = None
-
-        self.connect(self.nm, SIGNAL("finished(QNetworkReply*)"),
-                     self.httpRequestFinished)
-
+class UploadgeekNl(BaseSite):
     def upload(self, path):
         self.html = ""
         url = QUrl("http://www.uploadgeek.nl/upload.php")
@@ -67,16 +54,6 @@ class UploadgeekNl(QObject):
         self.httpRequestAborted = False
         self.parent().ui.lblPartial.setText("Uploading %s."%path)
 
-    def error(self, code):
-        QMessageBox.information(None, self.__str__(),
-                                          "Upload failed: %s." % self.rep.errorString())        
-    def readHttp(self):
-        self.html += self.rep.readAll()
-
-    def cancelUpload(self):
-        self.httpRequestAborted = True
-        self.rep.abort()
-
     def httpRequestFinished(self, reply):
         if self.httpRequestAborted:
             return
@@ -88,13 +65,6 @@ class UploadgeekNl(QObject):
         thumb = re.sub("\.(\w*)$", "_thumb.\\1", url)
         code = "[URL=\"%s\"][IMG]%s[/IMG][/URL]"%(url, thumb)
         self.emit(SIGNAL("done(QString)"), str(code))
-
-
-    def updateDataSendProgress(self, done, total):
-        if self.httpRequestAborted:
-            return
-        self.parent().ui.pbPartial.setMaximum(total)
-        self.parent().ui.pbPartial.setValue(done)
 
     def __str__(self):
         return "Uploadgeek.nl"

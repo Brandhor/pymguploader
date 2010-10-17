@@ -1,20 +1,7 @@
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtNetwork import *
-import mimetypes
-import re
-import urllib2
-from BeautifulSoup import BeautifulSoup
+from base import *
 
-class Turboimagehost(QObject):
-    def __init__(self, parent):
-        super(Turboimagehost, self).__init__(parent)
-        self.nm = QNetworkAccessManager(parent)
-        self.rep = None
-        self.server = None
-        
-        self.connect(self.nm, SIGNAL("finished(QNetworkReply*)"),
-                     self.httpRequestFinished)
+class Turboimagehost(BaseSite):
+    server = None
     
     def upload(self, path):
         if not self.server:
@@ -84,17 +71,6 @@ class Turboimagehost(QObject):
     
         self.httpRequestAborted = False
         self.parent().ui.lblPartial.setText("Uploading %s."%path)
-    
-    def error(self, code):
-        QMessageBox.error(None, "Turboimagehost",
-                                          "Upload failed: %s." % self.rep.errorString())
-    
-    def readHttp(self):
-        self.html += self.rep.readAll()
-        
-    def cancelUpload(self):
-        self.httpRequestAborted = True
-        self.rep.abort()
         
     def httpRequestFinished(self, reply):
         if self.httpRequestAborted:
@@ -103,12 +79,6 @@ class Turboimagehost(QObject):
         s = BeautifulSoup(str(self.html))
         code = s.findAll("input", {"class":"codes"})[1].get("value")
         self.emit(SIGNAL("done(QString)"), code)
-
-    def updateDataSendProgress(self, done, total):
-        if self.httpRequestAborted:
-            return
-        self.parent().ui.pbPartial.setMaximum(total)
-        self.parent().ui.pbPartial.setValue(done)
     
     def __str__(self):
         return "Turboimagehost.com"

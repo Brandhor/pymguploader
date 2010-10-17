@@ -1,21 +1,7 @@
 # -*- coding: utf-8 -*-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtNetwork import *
-import mimetypes
-import re
-import urllib2
-from BeautifulSoup import BeautifulSoup
+from base import *
 
-class UploadgeekCom(QObject):
-    def __init__(self, parent):
-        super(UploadgeekCom, self).__init__(parent)
-        self.nm = QNetworkAccessManager(parent)
-        self.rep = None
-        
-        self.connect(self.nm, SIGNAL("finished(QNetworkReply*)"),
-                     self.httpRequestFinished)
-
+class UploadgeekCom(BaseSite):
     def upload(self, path):
         self.html = ""
         url = QUrl("http://www.uploadgeek.com/upload.php")
@@ -66,16 +52,6 @@ class UploadgeekCom(QObject):
         self.httpRequestAborted = False
         self.parent().ui.lblPartial.setText("Uploading %s."%path)
 
-    def error(self, code):
-        QMessageBox.error(None, self.__str__(),
-                                          "Upload failed: %s." % self.rep.errorString())
-    def readHttp(self):
-        self.html += self.rep.readAll()
-
-    def cancelUpload(self):
-        self.httpRequestAborted = True
-        self.rep.abort()
-
     def httpRequestFinished(self, reply):
         if self.httpRequestAborted:
             return
@@ -93,12 +69,6 @@ class UploadgeekCom(QObject):
         s = BeautifulSoup(r)
         code = s.find("input", {"class":"code_box"}).get("value")
         self.emit(SIGNAL("done(QString)"), code)
-
-    def updateDataSendProgress(self, done, total):
-        if self.httpRequestAborted:
-            return
-        self.parent().ui.pbPartial.setMaximum(total)
-        self.parent().ui.pbPartial.setValue(done)
 
     def __str__(self):
         return "Uploadgeek.com"
