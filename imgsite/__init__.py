@@ -12,3 +12,5 @@ from turboimagehost import Turboimagehost
 from postimage import Postimage
 from upmyphoto import Upmyphoto
 from freeimagehosting import Freeimagehosting
+from kb250 import KB250
+from simplestimhost import SimplestImHost

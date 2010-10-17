@@ -136,6 +136,10 @@ class ImageUploader(QMainWindow):
             
     def addFolderClicked(self):
         fDir = QFileDialog.getExistingDirectory(self, "Select Directory", self.lastDir)
+
+        if not fDir:
+            return
+
         filters = QStringList()
         for f in ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.tif", "*.tiff"]:
             filters.append(f)
