@@ -191,11 +191,6 @@ class Radikal(BaseSite):
     def httpRequestFinished(self, reply):
         if self.httpRequestAborted:
             return
-            
-        f = open("ru.html", "w")
-        f.write(self.html)
-        f.close()
-        
 
         s = BeautifulSoup(unicode(self.html, "utf-8"))
         img = s.find("input", {"id":"input_link_1"}).get("value")
