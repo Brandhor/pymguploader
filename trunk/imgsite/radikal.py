@@ -196,8 +196,6 @@ class Radikal(BaseSite):
         img = s.find("input", {"id":"input_link_1"}).get("value")
         thumb = s.find("input", {"id":"input_link_3"}).get("value")
         
-        print img
-        print thumb
         code = re.sub("URL=(.*?)\]\[", "URL=%s]["%img, thumb)
 
         self.emit(SIGNAL("done(QString)"), code)
