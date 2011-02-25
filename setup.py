@@ -16,7 +16,7 @@ if sys.platform == 'win32':
         name='imguploader',
         windows=[{'script':'main.py' ,  'icon_resources': [(1, "img/icon.ico")], "dest_base":"imguploader"}],
         options = { "py2exe" :
-                            {"includes" : ["sip", "PictureFlow"],
+                            {"includes" : ["sip", "PictureFlow", 'BeautifulSoup'],
                             "dist_dir" : "dist",
                             "optimize":2,
                             "excludes":["_ssl"],
