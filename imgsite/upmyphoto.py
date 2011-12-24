@@ -126,7 +126,7 @@ class Upmyphoto(BaseSite):
             return            
 
         s = BeautifulSoup(str(self.html))
-        code = s.find("div", {"id":"content"}).findAll("input", {"class":"urlinput"})[1].get("value").strip()
+        code = s.find("div", {"id":"content"}).findAll("input", {"class":"urlinput"})[2].get("value").strip()
 
         self.emit(SIGNAL("done(QString)"), code)
 
