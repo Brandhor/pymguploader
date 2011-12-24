@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from PyQt4.QtNetwork import *
 from PyQt4.Qt import *
 import os
 import sys
+sys.path.append(os.getcwd())
 import re
 if not hasattr(sys, "frozen"):
     os.popen("pyuic4 ui.ui -o ui.py").read()
@@ -15,12 +17,13 @@ import traceback
 from watermark import *
 from ImageQt import ImageQt
 from PIL import Image
-try:
-    from QLCoverFlow import QLCoverFlow
-    from QLCoverFlowItem import QLCoverFlowItem
-    USE_COVERFLOW = True
-except:
-    USE_COVERFLOW = False
+#try:
+    #from QLCoverFlow import QLCoverFlow
+    #from QLCoverFlowItem import QLCoverFlowItem
+#    USE_COVERFLOW = True
+#except:
+#    USE_COVERFLOW = False
+USE_COVERFLOW = False
 app = None
 
 display_modes = ["list", "icon", "coverflow"]
@@ -363,9 +366,9 @@ class ImageUploader(QMainWindow):
         self.ui.textBBCode.clear()
         i = 0
         for code in self.codeList:
-            self.ui.textBBCode.setText(self.ui.textBBCode.toPlainText()+code)
+            self.ui.textBBCode.setPlainText(self.ui.textBBCode.toPlainText()+code)
             if i == self.ui.spinImg.value()-1:
-                self.ui.textBBCode.setText(self.ui.textBBCode.toPlainText()+"\n")
+                self.ui.textBBCode.setPlainText(self.ui.textBBCode.toPlainText()+"\n")
                 i = 0
             else:
                 i += 1
